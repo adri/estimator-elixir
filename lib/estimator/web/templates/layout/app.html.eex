@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Estimator</title>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+  </head>
+
+  <body>
+    <header class="header">
+      <%= partial "navigation.html", assigns %>
+    </header>
+
+    <section class="section section-nude">
+      <div class="container">
+        <!--<p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>-->
+        <!--<p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>-->
+
+        <main role="main">
+          <%= render @view_module, @view_template, assigns %>
+        </main>
+      </div>
+    </section>
+
+
+    <section class="section section-dark-blue">
+      <div class="container">
+          <h2>Footer</h2>
+      </div>
+    </section>
+
+    <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>

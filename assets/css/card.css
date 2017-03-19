@@ -1,0 +1,8 @@
+.estimator-card {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.estimator-card h3 {
+    padding: 20px;
+}

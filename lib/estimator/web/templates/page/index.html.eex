@@ -1,0 +1,58 @@
+<h3>TicketSwap WEBX</h3>
+
+<hr />
+
+<div>
+  <div class="row">
+    <div class="col-md-8">
+      <%= partial "card_deck.html", assigns %>
+
+
+      <div class="card">
+        <div class="header">
+          <button href="#" class="btn btn-simple btn-xs">WEBX-132</button>
+          <h3 class="title">GraphQL API > Support subscriptions</h3>
+        </div>
+
+        <div class="content all-icons">
+        </div>
+      </div>
+
+      <div class="header">
+        <h4 class="title">WEBX-132 GraphQL API > Support subscriptions</h4>
+      </div>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 30%;">
+          <span class="sr-only">60% Complete</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <%= partial "players.html", assigns %>
+    </div>
+  </div>
+</div>
+
+
+<div class="nav-tabs-navigation">
+  <div class="nav-tabs-wrapper">
+    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+      <li class=""><a href="#backlog" data-toggle="tab" aria-expanded="false">Backlog</a></li>
+      <li class="active"><a href="#estimation" data-toggle="tab" aria-expanded="true">Estimate Stories</a></li>
+      <li class=""><a href="#allstories" data-toggle="tab" aria-expanded="false">All Stories</a></li>
+    </ul>
+  </div>
+</div>
+
+<div id="my-tab-content" class="tab-content text-center">
+  <div class="tab-pane" id="backlog">
+    <p>Here is the backlog.</p>
+  </div>
+  <div class="tab-pane active" id="estimation">
+    <p>Here is your estimation.</p>
+  </div>
+  <div class="tab-pane" id="allstories">
+    <p>Here are your all stories.</p>
+  </div>
+</div>

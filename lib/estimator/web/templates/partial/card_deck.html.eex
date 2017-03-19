@@ -1,0 +1,12 @@
+<div id="card-deck" class="card-container">
+    <div class="card estimator-card">
+        <h3>S</h3>
+    </div>
+    <div class="card estimator-card">
+        <h3>XS</h3>
+    </div>
+    <div class="card estimator-card">
+        <h3>M</h3>
+    </div>
+</div>
+

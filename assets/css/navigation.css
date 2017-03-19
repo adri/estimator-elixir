@@ -1,0 +1,11 @@
+#navigation {
+    background-image: url("/images/red.jpg");
+    background-position: center 500px;
+    background-size: cover;
+    background-attachment: fixed;
+    margin-top: 0;
+}
+
+.navbar {
+    margin-bottom: 0;
+}
