@@ -75,13 +75,16 @@ class Estimation {
     }
 
     formatPlayers(players) {
-        return Presence.list(players, (id, { metas }) => ({
-            id: id,
-            avatar: metas[0].user.avatar,
-            name: metas[0].user.name,
-            joinedAt: (new Date(metas[0].online_at)).toLocaleTimeString(),
-            lastVote: metas[0].last_vote,
-        }))
+        return Presence.list(players, (id, {metas}) => {
+            const meta = metas.reduce((prev, current) => (prev.online_at > current.online_at) ? prev : current);
+            return {
+                id: id,
+                avatar: meta.user.avatar,
+                name: meta.user.name,
+                joinedAt: (new Date(meta.online_at)).toLocaleTimeString(),
+                lastVote: meta.last_vote,
+            };
+        })
     }
 }
 
