@@ -26,9 +26,9 @@ if (window.current_user && playerList && cardDeck) {
 }
 
 
-$(".card").on("touchstart", function(){
+$("#card-deck .card").on("touchstart", function(){
     $(this).addClass("mobileHoverFix");
 });
-$(".card").on("touchend", function(){
+$("#card-deck .card").on("touchend", function(){
     $(this).removeClass("mobileHoverFix");
 });
