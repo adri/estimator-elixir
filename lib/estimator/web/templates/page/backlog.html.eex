@@ -1,0 +1,36 @@
+<%= partial "sub_navigation.html", active: :backlog %>
+
+<div class="card">
+    <div class="header">
+        <h4 class="title">JIRA Backlog</h4>
+        <p class="category">Please select which stories to estimate</p>
+    </div>
+    <div class="content table-responsive table-full-width">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                  <td></td>
+                  <td>Key</td>
+                  <td>Summary</td>
+                  <td>Estimation</td>
+                </tr>
+            </thead>
+            <tbody>
+            <%= for issue <- @backlog["issues"] do %>
+                <tr>
+                  <td width="30">
+                      <%= button "select",
+                            to: "/issues/#{issue["key"]}/select",
+                            method: :post,
+                            class: "btn btn-sm btn-success"
+                      %>
+                  </td>
+                  <td width="100"><%= issue["key"] %></td>
+                  <td><%= issue["fields"]["summary"] %></td>
+                  <td><%= issue["fields"]["customfield_10026"] %></td>
+                </tr>
+            <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -22,6 +22,16 @@ config :ueberauth, Ueberauth,
     github: { Ueberauth.Strategy.Github, [uid_field: "login"] },
   ]
 
+config :guardian, Guardian,
+  verify_module: Guardian.JWT,
+  allowed_algos: ["HS512"], # optional
+  issuer: "Estimator",
+  ttl: { 30, :days },
+  allowed_drift: 2000,
+  verify_issuer: true, # optional
+  secret_key: "2+nLPwNw0i/b/03tm21Utu/uZC1VN8lSG/VgMmMxy2gw5N1C6KCdstgTGQljZuKg",
+  serializer: Estimator.GuardianSerializer
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

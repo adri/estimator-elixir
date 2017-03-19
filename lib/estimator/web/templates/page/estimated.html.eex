@@ -1,0 +1,23 @@
+<%= partial "sub_navigation.html", active: :estimated %>
+
+<div class="card">
+  <div class="header">
+    <h4 class="title">Estimated stories</h4>
+    <p class="category">Overview over all estimated stories</p>
+  </div>
+  <div class="content table-responsive table-full-width">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <td></td>
+        <td>Key</td>
+        <td>Summary</td>
+        <td>Estimation</td>
+      </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -2,33 +2,21 @@
     <nav class="navbar navbar-ct-transparent" role="navigation">
       <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+        <div class="navbar-left">
           <a class="navbar-brand" href="#">Estimator</a>
         </div>
-
-        <div class="collapse navbar-collapse" id="navigation-example-2">
-          <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
             <%= if @current_user do %>
-                    <!--<img src="<%= @current_user.avatar %>" width="30" class="img-circle img-no-padding img-responsive"/>-->
-                <li>
-                    <%= button "Logout", to: auth_path(@conn, :delete), method: :delete, class: "btn btn-fill btn-neutral" %>
-                </li>
+            <!--<img src="<%= @current_user.avatar %>" width="30" class="img-circle img-no-padding img-responsive"/>-->
+            <%= button "Logout", to: auth_path(@conn, :delete), method: :delete, class: "btn btn-fill btn-neutral" %>
             <% else %>
-                <li>
-                  <a href="/auth/github" class="btn btn-fill btn-neutral">
-                    <i class="fa fa-github"></i>
-                    Login
-                  </a>
-                </li>
+            <a href="/auth/github" class="btn btn-fill btn-neutral">
+              <i class="fa fa-github"></i>Login
+            </a>
             <% end %>
-          </ul>
-        </div><!-- /.navbar-collapse -->
+          </li>
+        </ul>
       </div><!-- /.container-->
     </nav>
 </div>

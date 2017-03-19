@@ -17,8 +17,18 @@
 //
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
-
 import Estimation from "./estimation"
+const playerList = document.getElementById('player-list');
+const cardDeck = document.getElementById('card-deck');
+if (window.current_user && playerList && cardDeck) {
+    const estimation = new Estimation('estimation:ticketswap', window.current_user, playerList, cardDeck);
+    estimation.initialize();
+}
 
-let estimation = new Estimation('estimation:ticketswap', window.current_user);
-estimation.initialize();
+
+$(".card").on("touchstart", function(){
+    $(this).addClass("mobileHoverFix");
+});
+$(".card").on("touchend", function(){
+    $(this).removeClass("mobileHoverFix");
+});

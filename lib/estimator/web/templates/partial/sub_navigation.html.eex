@@ -1,0 +1,10 @@
+<div class="nav-tabs-navigation">
+  <div class="nav-tabs-wrapper">
+    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+      <li class="<%= if @active == :backlog, do: "active" %>"><a href="/backlog" aria-expanded="false">Backlog</a></li>
+      <li class="<%= if @active == :estimate, do: "active" %>"><a href="/estimate" aria-expanded="true">Estimate</a></li>
+      <li class="<%= if @active == :estimated, do: "active" %>"><a href="/estimated" aria-expanded="false">Estimated Stories</a></li>
+    </ul>
+  </div>
+</div>
+

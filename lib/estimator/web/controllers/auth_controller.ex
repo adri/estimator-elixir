@@ -5,21 +5,17 @@ defmodule Estimator.Web.AuthController do
   alias Ueberauth.Strategy.Helpers
   alias Estimator.User.UserFromAuth
 
-  def request(conn, _params) do
-    render(conn, "request.html", callback_url: Helpers.callback_url(conn))
-  end
-
   def delete(conn, _params) do
-    conn
+    Guardian.Plug.sign_out(conn)
     |> put_flash(:info, "You have been logged out!")
     |> configure_session(drop: true)
-    |> redirect(to: "/")
+    |> redirect(to: "/login")
   end
 
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
     conn
     |> put_flash(:error, "Failed to authenticate.")
-    |> redirect(to: "/")
+    |> redirect(to: "/login")
   end
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
@@ -27,6 +23,7 @@ defmodule Estimator.Web.AuthController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Successfully authenticated.")
+        |> Guardian.Plug.sign_in(user)
         |> put_session(:current_user, user)
         |> redirect(to: "/")
       {:error, reason} ->

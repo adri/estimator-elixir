@@ -1,0 +1,8 @@
+<div class="card">
+    <div class="header">
+        <h4 class="title">Login</h4>
+    </div>
+    <div class="content">
+        <p>Please login at the top right</p>
+    </div>
+</div>

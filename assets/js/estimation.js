@@ -4,12 +4,12 @@ const cards = ['XS', 'S', 'M', 'L', 'XL'];
 
 class Estimation {
 
-    constructor(estimationName, user) {
+    constructor(estimationName, user, playerList, cardDeck) {
         this.players = {};
         this.estimationName = estimationName;
         this.user = user;
-        this.playerList = document.getElementById('player-list');
-        this.cardDeck = document.getElementById('card-deck');
+        this.playerList = playerList;
+        this.cardDeck = cardDeck;
 
         this.renderCardDeck = this.renderCardDeck.bind(this);
         this.renderPlayers = this.renderPlayers.bind(this);
@@ -17,6 +17,9 @@ class Estimation {
     }
 
     initialize() {
+        if (!this.user) {
+            return;
+        }
         // this.user = window.prompt('What is your name?') || 'Anonymous';
         this.socket = new Socket('/socket', { params: {
             user: this.user,

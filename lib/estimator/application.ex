@@ -15,6 +15,7 @@ defmodule Estimator.Application do
       # Start your own worker by calling: Estimator.Worker.start_link(arg1, arg2, arg3)
       # worker(Estimator.Worker, [arg1, arg2, arg3]),
       supervisor(Estimator.Web.Presence, []),
+      supervisor(ConCache, [[ttl: :timer.seconds(3600)], [name: :jia_backlog]])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

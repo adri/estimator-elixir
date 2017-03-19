@@ -23,15 +23,18 @@
 
     <section class="section section-nude">
       <div class="container">
-        <!--<p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>-->
-        <!--<p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>-->
+        <%= if get_flash(@conn, :success) do %>
+          <p class="alert alert-success" role="alert"><%= get_flash(@conn, :success) %></p>
+        <% end%>
+        <%= if get_flash(@conn, :error) do %>
+          <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+        <% end%>
 
         <main role="main">
           <%= render @view_module, @view_template, assigns %>
         </main>
       </div>
     </section>
-
 
     <section class="section section-dark-blue">
       <div class="container">

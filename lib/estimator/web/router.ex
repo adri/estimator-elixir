@@ -12,29 +12,33 @@ defmodule Estimator.Web.Router do
   end
 
   pipeline :browser_auth do
+    plug Guardian.Plug.VerifySession
+#    plug Guardian.Plug.LoadResource
+    plug Guardian.Plug.EnsureAuthenticated, handler: Estimator.Web.PageController
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
+  scope "/login", Estimator.Web do
+    pipe_through [:browser]
+
+    get "/", PageController, :login
   end
 
   scope "/", Estimator.Web do
     pipe_through [:browser, :browser_auth]
 
-    get "/", PageController, :index
+    get "/", PageController, :backlog
+    get "/backlog", PageController, :backlog
+    get "/estimate", PageController, :estimate
+    get "/estimated", PageController, :estimated
+    post "/issues/:key/select", PageController, :select_issue
   end
 
   scope "/auth", Estimator.Web do
-      pipe_through [:browser, :browser_auth]
+      pipe_through [:browser]
 
       get "/:identity", AuthController, :login
       get "/:identity/callback", AuthController, :callback
       post "/:identity/callback", AuthController, :callback
       delete "/logout", AuthController, :delete
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", Estimator.Web do
-  #   pipe_through :api
-  # end
 end

@@ -1,5 +1,6 @@
 defmodule Estimator.Web.UserSocket do
   use Phoenix.Socket
+  use Guardian.Phoenix.Socket
 
   ## Channels
   channel "estimation:*", Estimator.Web.EstimationChannel
