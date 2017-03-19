@@ -4,9 +4,10 @@ const cards = ['XS', 'S', 'M', 'L', 'XL'];
 
 class Estimation {
 
-    constructor(estimationName) {
+    constructor(estimationName, user) {
         this.players = {};
         this.estimationName = estimationName;
+        this.user = user;
         this.playerList = document.getElementById('player-list');
         this.cardDeck = document.getElementById('card-deck');
 
@@ -17,9 +18,9 @@ class Estimation {
 
     initialize() {
         // this.user = window.prompt('What is your name?') || 'Anonymous';
-        this.user = 'Adrian' + Math.random();
-
-        this.socket = new Socket('/socket', { params: { user: this.user } });
+        this.socket = new Socket('/socket', { params: {
+            user: this.user,
+        } });
         this.socket.connect();
 
         this.estimation = this.socket.channel(this.estimationName);
@@ -39,7 +40,6 @@ class Estimation {
                 return;
             }
 
-            console.log('vote', e.target.innerHTML, cards);
             this.estimation.push('vote:new', e.target.innerHTML);
         })
     }
@@ -56,15 +56,15 @@ class Estimation {
         this.playerList.innerHTML = this.formatPlayers(players).map(player => `
           <li>
             <div class="row">
-              <div class="col-xs-3">
+              <div class="col-xs-2">
                 <div class="avatar">
-                  <img src="/images/faces/face-0.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                  <img src="${player.avatar}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
                 </div>
               </div>
-              <div class="col-xs-6">
+              <div class="col-xs-7">
                 ${player.name}
                 <br>
-                <span class="text-success"><small>Joined ${player.joinedAt}</small></span>
+                <span class="text-success"><small>Last action ${player.joinedAt}</small></span>
               </div>
               <div class="col-xs-3 text-right">
                 <span class="vote">${player.lastVote || '-'}</span>
@@ -75,9 +75,10 @@ class Estimation {
     }
 
     formatPlayers(players) {
-        console.log('players: ', players);
-        return Presence.list(players, (user, { metas }) => ({
-            name: user,
+        return Presence.list(players, (id, { metas }) => ({
+            id: id,
+            avatar: metas[0].user.avatar,
+            name: metas[0].user.name,
             joinedAt: (new Date(metas[0].online_at)).toLocaleTimeString(),
             lastVote: metas[0].last_vote,
         }))

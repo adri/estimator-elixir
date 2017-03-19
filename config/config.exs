@@ -17,6 +17,11 @@ config :estimator, Estimator.Web.Endpoint,
   pubsub: [name: Estimator.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :ueberauth, Ueberauth,
+  providers: [
+    github: { Ueberauth.Strategy.Github, [uid_field: "login"] },
+  ]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

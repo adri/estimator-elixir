@@ -3,63 +3,12 @@
     <h4 class="title">Players</h4>
   </div>
   <div class="content">
-    <ul id="player-list" class="list-unstyled team-members">
-      <li>
-        <div class="row">
-          <div class="col-xs-3">
-            <div class="avatar">
-              <img src="/images/faces/face-0.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-            </div>
-          </div>
-          <div class="col-xs-6">
-            DJ Khaled
-            <br>
-            <span class="text-muted"><small>Offline</small></span>
-          </div>
-          <div class="col-xs-3 text-right">
-            <span class="vote">M</span>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="row">
-          <div class="col-xs-3">
-            <div class="avatar">
-              <img src="/images/faces/face-1.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-            </div>
-          </div>
-          <div class="col-xs-6">
-            Creative Tim
-            <br>
-            <span class="text-success"><small>Available</small></span>
-          </div>
-          <div class="col-xs-3 text-right">
-            <span class="vote">M</span>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="row">
-          <div class="col-xs-3">
-            <div class="avatar">
-              <img src="/images/faces/face-3.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-            </div>
-          </div>
-          <div class="col-xs-6">
-            Flume
-            <br>
-            <span class="text-danger"><small>Busy</small></span>
-          </div>
-          <div class="col-xs-3 text-right">
-            <span class="vote">M</span>
-          </div>
-        </div>
-      </li>
-    </ul>
+    <ul id="player-list" class="list-unstyled team-members"></ul>
     <div class="footer">
       <hr>
       <div class="stats">
-        <i class="ti-timer"></i> In the last hour
+        <!--<i class="ti-timer"></i> -->
+        Currently logged in players
       </div>
   </div>
 

@@ -1,6 +1,7 @@
 .estimator-card {
     display: inline-block;
     margin-right: 15px;
+    cursor: pointer;
 }
 
 .estimator-card h3 {

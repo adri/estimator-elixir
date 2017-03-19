@@ -40,6 +40,15 @@
     </section>
 
     <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
+    <%= if @current_user do %>
+        <script>
+          window.current_user = {
+              id: "<%= @current_user.id %>",
+              name: "<%= @current_user.name %>",
+              avatar: "<%= @current_user.avatar %>",
+          };
+        </script>
+    <% end %>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

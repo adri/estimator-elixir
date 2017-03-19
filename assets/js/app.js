@@ -20,5 +20,5 @@
 
 import Estimation from "./estimation"
 
-let example = new Estimation('estimation:ticketswap');
-example.initialize();
+let estimation = new Estimation('estimation:ticketswap', window.current_user);
+estimation.initialize();

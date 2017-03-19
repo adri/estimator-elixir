@@ -14,12 +14,19 @@
 
         <div class="collapse navbar-collapse" id="navigation-example-2">
           <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href="#" class="btn btn-fill btn-neutral">
-                <i class="fa fa-github"></i>
-                Login
-              </a>
-            </li>
+            <%= if @current_user do %>
+                    <!--<img src="<%= @current_user.avatar %>" width="30" class="img-circle img-no-padding img-responsive"/>-->
+                <li>
+                    <%= button "Logout", to: auth_path(@conn, :delete), method: :delete, class: "btn btn-fill btn-neutral" %>
+                </li>
+            <% else %>
+                <li>
+                  <a href="/auth/github" class="btn btn-fill btn-neutral">
+                    <i class="fa fa-github"></i>
+                    Login
+                  </a>
+                </li>
+            <% end %>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-->

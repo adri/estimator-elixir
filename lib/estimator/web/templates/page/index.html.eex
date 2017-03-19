@@ -39,8 +39,8 @@
   <div class="nav-tabs-wrapper">
     <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
       <li class=""><a href="#backlog" data-toggle="tab" aria-expanded="false">Backlog</a></li>
-      <li class="active"><a href="#estimation" data-toggle="tab" aria-expanded="true">Estimate Stories</a></li>
-      <li class=""><a href="#allstories" data-toggle="tab" aria-expanded="false">All Stories</a></li>
+      <li class="active"><a href="#estimation" data-toggle="tab" aria-expanded="true">Selected Stories</a></li>
+      <li class=""><a href="#allstories" data-toggle="tab" aria-expanded="false">Estimated Stories</a></li>
     </ul>
   </div>
 </div>
