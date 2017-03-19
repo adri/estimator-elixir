@@ -3,7 +3,7 @@
     <h4 class="title">Players</h4>
   </div>
   <div class="content">
-    <ul id="player-list" class="list-unstyled team-members"></ul>
+    <ul id="player-list" class="list-unstyled"></ul>
     <div class="footer">
       <hr>
       <div class="stats">

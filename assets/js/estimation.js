@@ -54,24 +54,21 @@ class Estimation {
 
     renderPlayers(players) {
         this.playerList.innerHTML = this.formatPlayers(players).map(player => `
-          <li>
-            <div class="row">
-              <div class="col-xs-2">
-                <div class="avatar">
-                  <img src="${player.avatar}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+            <li>
+                <div class="media">
+                  <div class="media-left">
+                    <img src="${player.avatar || '/images/faces/face-0.jpg'}" alt="${player.name}" width="50" class="media-object img-circle img-no-padding">
+                  </div>
+                  <div class="media-body">
+                    <h5 class="media-heading">${player.name}</h5>
+                    <span class="text-success"><small>Last action ${player.joinedAt}</small></span>
+                  </div>
+                  <div class="media-right">
+                    <span class="vote">${player.lastVote || '-'}</span>
+                  </div>
                 </div>
-              </div>
-              <div class="col-xs-7">
-                ${player.name}
-                <br>
-                <span class="text-success"><small>Last action ${player.joinedAt}</small></span>
-              </div>
-              <div class="col-xs-3 text-right">
-                <span class="vote">${player.lastVote || '-'}</span>
-              </div>
-            </div>
-          </li>
-        `).join('');
+            </li>
+         `).join('');
     }
 
     formatPlayers(players) {
