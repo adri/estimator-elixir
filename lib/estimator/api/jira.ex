@@ -5,9 +5,7 @@ defmodule Estimator.Api.Jira do
     ConCache.dirty_get_or_store(:jia_backlog, board_id, fn() ->
         fields = "summary,description,priority,issuetype,status,#{estimation_field()}";
         expand = "renderedFields";
-        test = API.get!("/rest/agile/1.0/board/#{board_id}/backlog?fields=#{fields}&expand=#{expand}").body
-        IO.inspect test
-        test
+        API.get!("/rest/agile/1.0/board/#{board_id}/backlog?fields=#{fields}&expand=#{expand}").body
     end)
   end
 
