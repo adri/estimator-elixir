@@ -8,6 +8,7 @@ defmodule Estimator.Repo.Migrations.CreateSelectedIssue do
       add :selected, :boolean, default: false, null: false
       add :summary, :string
       add :description, :text
+      add :estimation, :text
       add :raw, :map
 
       timestamps()

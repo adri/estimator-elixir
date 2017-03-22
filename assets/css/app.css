@@ -1,8 +1,9 @@
 /* This file is for your main application css. */
 @import "../vendor/css/bootstrap.min.css";
-@import "../vendor/css/bootstrap-theme.min.css";
 @import "../vendor/css/ct-paper.css";
 @import "demo.css";
 
 @import "navigation.css";
 @import "players.css";
+@import "backlog.css";
+@import "jira.css";

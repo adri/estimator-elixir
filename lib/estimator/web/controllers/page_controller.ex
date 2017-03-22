@@ -2,6 +2,11 @@ defmodule Estimator.Web.PageController do
   use Estimator.Web, :controller
 
   alias Estimator.Api.Jira
+  alias Estimator.Issue
+  alias Estimator.Issue.{
+    SelectedIssue,
+    IssueFromJira
+  }
 
   plug Ueberauth
 
@@ -10,15 +15,20 @@ defmodule Estimator.Web.PageController do
   end
 
   def backlog(conn, _params) do
-    backlog = Jira.backlog(1)
+    backlog = Jira.backlog(board_id())
+      |> Jira.backlog_filter(Issue.list_selected)
 
-    render conn, backlog: backlog, current_user: get_session(conn, :current_user)
+    render conn,
+      backlog: backlog,
+      current_user: get_session(conn, :current_user),
+      changeset: SelectedIssue.changeset(%SelectedIssue{})
   end
 
   def estimate(conn, _params) do
-    # Todo: read stories to estimate
-    # Todo: current state
-    render conn, current_user: get_session(conn, :current_user)
+    render conn,
+      current_user: get_session(conn, :current_user),
+      selected_issues: Issue.list_to_estimate(),
+      changeset: SelectedIssue.changeset(%SelectedIssue{})
   end
 
   def estimated(conn, _params) do
@@ -26,9 +36,13 @@ defmodule Estimator.Web.PageController do
     render conn, current_user: get_session(conn, :current_user)
   end
 
-  def select_issue(conn, %{"key" => key}) do
-    # Todo: save estimation and push to jira
-    success(conn, "Issue selected", page_path(conn, :backlog))
+  def select_issues(conn, %{"selected_issue" => issues}) do
+    issues = for {issue, selected} <- issues, selected == "true", do: issue
+    Jira.backlog(board_id())["issues"]
+      |> Enum.filter(&(Enum.member?(issues, &1["key"]) ))
+      |> Enum.map(&(Issue.insert_jira_issue(&1)))
+
+    success(conn, "Issue selected", page_path(conn, :estimate))
   end
 
   def unauthenticated(conn, _) do
@@ -37,6 +51,10 @@ defmodule Estimator.Web.PageController do
   end
 
  # ---
+
+  defp board_id do
+    Application.get_env(:jira, :board_id, System.get_env("jira_board_id"))
+  end
 
   defp success(conn, message, redirect_path) do
     msg(conn, :success, message, redirect_path)

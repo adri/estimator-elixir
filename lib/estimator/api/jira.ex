@@ -3,9 +3,20 @@ defmodule Estimator.Api.Jira do
 
   def backlog(board_id) do
     ConCache.dirty_get_or_store(:jia_backlog, board_id, fn() ->
-        fields = "summary,priority,issuetype,status,#{estimation_field}";
-        API.get!("/rest/agile/1.0/board/#{board_id}/backlog?fields=#{fields}").body
+        fields = "summary,description,priority,issuetype,status,#{estimation_field()}";
+        expand = "renderedFields";
+        test = API.get!("/rest/agile/1.0/board/#{board_id}/backlog?fields=#{fields}&expand=#{expand}").body
+        IO.inspect test
+        test
     end)
+  end
+
+  def backlog_filter(backlog, selected_issues) do
+    keys = Enum.map(selected_issues, &(&1.key))
+
+    %{backlog |
+      "issues" => backlog["issues"] |> Enum.filter(&(!Enum.member?(keys, &1["key"]) ))
+    }
   end
 
   def issue(issue_id) do

@@ -1,0 +1,32 @@
+.jira-content {
+    line-height: 1.4285714285714;
+    color: rgb(51, 51, 51);
+    font-size: 14px;
+}
+
+.jira-content a,
+.jira-content h1,
+.jira-content h2,
+.jira-content h3,
+.jira-content p
+{
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.jira-content h1:first-child,
+.jira-content h2:first-child
+{
+    margin-top: 0;
+}
+
+.jira-content h2 {
+    margin-bottom: 5px;
+    font-size: 20px;
+    line-height: 1.5;
+    color: #292929;
+}
+
+.jira-content a {
+    color: #3b73af;
+}

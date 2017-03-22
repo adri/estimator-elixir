@@ -1,5 +1,6 @@
 defmodule Estimator.Issue.SelectedIssue do
   use Estimator.Schema
+  use Timex.Ecto.Timestamps
 
   schema "selected_issues" do
     field :key, :string
@@ -7,6 +8,7 @@ defmodule Estimator.Issue.SelectedIssue do
     field :selected, :boolean, default: false
     field :summary, :string
     field :description, :string
+    field :estimation, :string
     field :raw, :map
 
     timestamps()

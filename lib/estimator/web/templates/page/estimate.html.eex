@@ -2,27 +2,9 @@
 <div>
   <div class="row">
     <div class="col-md-8">
-      <%= partial "card_deck.html", assigns %>
+      <div id="card-deck" class="card-container"></div>
 
-
-      <div class="card">
-        <div class="header">
-          <button href="#" class="btn btn-simple btn-xs">WEBX-132</button>
-          <h3 class="title">GraphQL API > Support subscriptions</h3>
-        </div>
-
-        <div class="content all-icons">
-        </div>
-      </div>
-
-      <!--<div class="header">-->
-        <!--<h4 class="title">WEBX-132 GraphQL API > Support subscriptions</h4>-->
-      <!--</div>-->
-      <!--<div class="progress">-->
-        <!--<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 30%;">-->
-          <!--<span class="sr-only">60% Complete</span>-->
-        <!--</div>-->
-      <!--</div>-->
+      <div id="issue" class="card"></div>
     </div>
 
     <div class="col-md-4">
@@ -31,3 +13,41 @@
   </div>
 </div>
 
+<div class="card">
+  <div class="header">
+    <h4 class="title">All Issues to Estimate</h4>
+    <p class="category">Overview over all issues to estimate.</p>
+  </div>
+  <div class="content table-responsive table-full-width">
+    <script>
+      window.issues = {};
+    </script>
+    <%= form_for @changeset, page_path(@conn, :select_issues), fn form -> %>
+        <table class="table table-hover estimate-table">
+          <thead>
+          <tr>
+            <td>Key</td>
+            <td>Summary</td>
+          </tr>
+          </thead>
+          <tbody>
+              <%= if Enum.empty?(@selected_issues) do %>
+              <tr>
+                <td colspan="2">No issues yet, <%= link 'check the backlog', to: page_path(@conn, :backlog) %>.</td>
+              </tr>
+              <% end %>
+              <%= for issue <- @selected_issues do %>
+                  <tr>
+                    <td width="100"><%= issue.key %></td>
+                    <td>
+                        <%= issue.summary %>
+                        <%= radio_button(form, :current_issue_key, issue.key, style: "display:none") %>
+                        <script>window.issues['<%= issue.key %>'] = <%= raw(issue_json(issue)) %></script>
+                    </td>
+                  </tr>
+              <% end %>
+          </tbody>
+        </table>
+    <% end %>
+  </div>
+</div>

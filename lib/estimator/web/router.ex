@@ -30,7 +30,7 @@ defmodule Estimator.Web.Router do
     get "/backlog", PageController, :backlog
     get "/estimate", PageController, :estimate
     get "/estimated", PageController, :estimated
-    post "/issues/:key/select", PageController, :select_issue
+    post "/issues/select", PageController, :select_issues
   end
 
   scope "/auth", Estimator.Web do

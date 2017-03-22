@@ -28,6 +28,15 @@ defmodule Estimator.Web.EstimationChannel do
     {:noreply, socket}
   end
 
+  def handle_in("moderator:set", message, socket) do
+      broadcast! socket, "moderator:set", %{
+        user: socket.assigns.user,
+        moderatorId: message,
+        timestamp: :os.system_time(:milli_seconds)
+      }
+
+    {:noreply, socket}
+  end
 
   defp user_id(socket) do
     socket.assigns.user["id"]
