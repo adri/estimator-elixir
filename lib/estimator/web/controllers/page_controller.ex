@@ -53,7 +53,7 @@ defmodule Estimator.Web.PageController do
  # ---
 
   defp board_id do
-    Application.get_env(:jira, :board_id, System.get_env("jira_board_id"))
+    Application.get_env(:jira, :board_id, System.get_env("JIRA_BOARD_ID"))
   end
 
   defp success(conn, message, redirect_path) do
