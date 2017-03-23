@@ -1,4 +1,12 @@
+.vote-container {
+    vertical-align: middle;
+}
+
 .vote {
     font-size: 18px;
     font-weight: bold;
+}
+
+.vote-controls {
+    /*display: none;*/
 }

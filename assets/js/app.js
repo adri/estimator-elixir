@@ -56,7 +56,7 @@ $(document).ready(function() {
             $(':radio', this).trigger('click');
             $(':radio', this).addClass("ui-state-highlight");
             if (typeof estimation !== 'undefined') {
-                estimation.setCurrentIssueKey($(':radio', this).val());
+                estimation.setCurrentIssueKeyByUser($(':radio', this).val());
             }
         }
     });

@@ -15,6 +15,8 @@ defmodule Estimator.Application do
       # Start your own worker by calling: Estimator.Worker.start_link(arg1, arg2, arg3)
       # worker(Estimator.Worker, [arg1, arg2, arg3]),
       supervisor(Estimator.Web.Presence, []),
+      supervisor(Estimator.Moderator, []),
+      supervisor(Estimator.Issue.CurrentIssue, []),
       supervisor(ConCache, [[ttl: :timer.seconds(3600)], [name: :jia_backlog]])
     ]
 

@@ -22,4 +22,10 @@ defmodule Estimator.Issue.SelectedIssue do
     |> cast(params, [:key, :link, :selected, :summary, :description, :raw])
     |> validate_required([:key, :link, :selected, :summary, :description, :raw])
   end
+
+  def changeset_update_estimation(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:key, :estimation])
+    |> validate_required([:key, :estimation])
+  end
 end

@@ -33,4 +33,14 @@ defmodule Estimator.Issue do
     IssueFromJira.create(params)
     |> Repo.insert!
   end
+
+#  @spec set_estimation(String.t, String.t) ::
+#      {:ok, SelectedIssue.t} |
+#      {:error, Ecto.Changeset.t}
+  def set_estimation(issue_key, estimation) do
+    SelectedIssue
+    |> Repo.get(issue_key)
+    |> SelectedIssue.changeset_update_estimation(%{key: issue_key, estimation: estimation})
+    |> Repo.update
+  end
 end

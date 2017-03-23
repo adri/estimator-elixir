@@ -9,7 +9,8 @@ class Estimation {
         this.user = user;
         this.issues = issues;
         this.issueElem = issueElem;
-        this.currentIssueKey = this.selectFirstIssue();
+        this.currentIssueKey = null;
+        this.votes = {};
         this.players = {};
         this.playerListElem = playerListElem;
         this.cardDeckElem = cardDeckElem;
@@ -19,10 +20,14 @@ class Estimation {
         this.renderPlayers = this.renderPlayers.bind(this);
         this.renderIssue = this.renderIssue.bind(this);
         this.formatPlayers = this.formatPlayers.bind(this);
+        this.setCurrentIssueKey = this.setCurrentIssueKey.bind(this);
+        this.setModerator = this.setModerator.bind(this);
+        this.setVote = this.setVote.bind(this);
+        this.getVoteOnCurrentIssue = this.getVoteOnCurrentIssue.bind(this);
     }
 
     initialize() {
-        // this.user.id = 'adri' + Math.ceil(Math.random() * 10);
+        this.user.id = 'adri' + window.location.hash;
         this.socket = new Socket('/socket', { params: {
             user: this.user,
         } });
@@ -32,13 +37,13 @@ class Estimation {
         this.estimation.on('players_state', state => {
             this.players = Presence.syncState(this.players, state);
             this.renderPlayers(this.players);
-            if (!this.currentModeratorId && this.players.length === 1) {
-                this.estimation.push('moderator:set', this.user.id);
-            }
         });
         this.estimation.on('presence_diff', state => {
             this.players = Presence.syncDiff(this.players, state);
-            this.renderPlayers(this.players)
+            this.renderPlayers(this.players);
+            if (!this.currentModeratorId && Object.keys(this.players).length === 1) {
+                this.estimation.push('moderator:set', this.user.id);
+            }
         });
         this.estimation.join();
 
@@ -47,25 +52,96 @@ class Estimation {
                 return;
             }
 
-            this.estimation.push('vote:new', e.target.innerHTML);
+            this.estimation.push('vote:new', {issue_key: this.currentIssueKey, vote: e.target.innerHTML});
         });
 
-        this.estimation.on('moderator:set', state => {
-            this.currentModeratorId = state.moderatorId;
+        this.estimation.on('vote:new', state => {
+            this.setVote(state.user_id, state.issue_key, state.vote);
             this.renderPlayers(this.players);
-            this.renderCardDeck();
         });
+        this.estimation.on('issue:current', state => {
+            if (state.issue_key) {
+                console.log('Issue set from moderator');
+                this.setCurrentIssueKey(state.issue_key, false);
+            } else {
+                console.log('no issue on server, selecting first');
+                this.estimation.push('issue:set', {issue_key: this.selectFirstIssue()});
+            }
+        });
+        this.estimation.on('issue:set', state => {
+            console.log('Issue set from moderator');
+            this.setCurrentIssueKey(state.issue_key, false);
+        });
+        this.estimation.on('moderator:set', state => this.setModerator(state.moderator_id));
+        this.estimation.on('moderator:current', state => this.setModerator(state.moderator_id));
 
         this.renderCardDeck();
+    }
 
-        if (this.currentIssueKey) {
-            this.setCurrentIssueKey(this.currentIssueKey);
+    setCurrentIssueKeyByUser(issueKey) {
+        if (!this.isModerator(this.user.id)) {
+            return;
+        }
+
+        this.setCurrentIssueKey(issueKey);
+    }
+
+    setCurrentIssueKey(issueKey, broadcast = true) {
+        console.log('set issue', issueKey);
+        this.currentIssueKey = issueKey;
+        this.renderIssue(this.issues[this.currentIssueKey]);
+        this.renderPlayers(this.players);
+        if (broadcast) {
+            this.estimation.push('issue:set', {issue_key: issueKey});
         }
     }
 
-    setCurrentIssueKey(issueKey) {
-        this.currentIssueKey = issueKey;
-        this.renderIssue(this.issues[this.currentIssueKey]);
+    setVote(userId, issueKey, vote) {
+        console.log('set vote', userId, issueKey, vote);
+        this.votes[issueKey] = this.votes[issueKey] || {};
+        this.votes[issueKey][userId] = vote;
+    }
+
+    getVoteOnCurrentIssue(userId) {
+        this.votes[this.currentIssueKey] = this.votes[this.currentIssueKey] || {};
+        return this.votes[this.currentIssueKey][userId];
+    }
+
+
+    isModerator(userId) {
+        if (!this.currentModeratorId) {
+            return false;
+        }
+
+        return userId === this.currentModeratorId;
+    }
+
+    setModerator(userId) {
+        console.log('set moderator', userId);
+        this.currentModeratorId = userId;
+        this.renderPlayers(this.players);
+        this.renderCardDeck();
+    }
+
+    allPlayersVoted(players) {
+        const waitingFor = this.formatPlayers(players).filter(player => {
+            if (this.isModerator(player.id)) {
+                return false;
+            }
+
+            return !this.getVoteOnCurrentIssue(player.id);
+        });
+
+        console.log('waiting for players ', waitingFor.length);
+        return waitingFor.length === 0;
+    }
+
+    selectFirstIssue() {
+        if (Object.keys(this.issues).length === 0) {
+            return null;
+        }
+
+        return Object.keys(this.issues)[0];
     }
 
     renderCardDeck() {
@@ -86,16 +162,29 @@ class Estimation {
                     <img src="${player.avatar || '/images/faces/face-0.jpg'}" alt="${player.name}" width="50" class="media-object img-circle img-no-padding">
                   </div>
                   <div class="media-body">
-                    <h5 class="media-heading">${player.name}</h5>
+                    <h5 class="media-heading">${player.name} ${player.id}</h5>
                     ${this.isModerator(player.id) ? `<span class="text-danger"><small>Moderator</small></span>` : ''}
                     <span class="text-success"><small>Last action ${player.joinedAt}</small></span>
                   </div>
-                  <div class="media-right">
-                    <span class="vote">${!this.isModerator(player.id) ? player.lastVote || '-' : ''}</span>
+                  <div class="media-right vote-container">
+                    <span class="vote">${this.renderVote(player)}</span>
                   </div>
                 </div>
             </li>
          `).join('');
+    }
+
+    renderVote(player) {
+        if (this.isModerator(player.id)) {
+            return '';
+        }
+        const currentVote = this.getVoteOnCurrentIssue(player.id);
+
+        if (!this.allPlayersVoted(this.players) && currentVote) {
+            return '✔';
+        }
+
+        return currentVote || '-';
     }
 
     formatPlayers(players) {
@@ -122,30 +211,6 @@ class Estimation {
                 ${issue.description}
             </div>
          `;
-    }
-
-    isModerator(userId) {
-        if (!this.currentModeratorId) {
-            return false;
-        }
-
-        return userId === this.currentModeratorId;
-    }
-
-    allPlayersVoted(players) {
-        // todo
-    }
-
-    resetVotes() {
-        // todo
-    }
-
-    selectFirstIssue() {
-        if (Object.keys(this.issues).length === 0) {
-            return null;
-        }
-
-        return Object.keys(this.issues)[0];
     }
 }
 
