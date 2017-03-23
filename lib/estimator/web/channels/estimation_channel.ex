@@ -61,12 +61,12 @@ defmodule Estimator.Web.EstimationChannel do
   end
 
   def handle_in("estimation:set", %{"issue_key" => issue_key, "estimation" => estimation}, socket) do
-      Issue.set_estimation(issue_key, estimation);
-      broadcast! socket, "estimation:set", %{
-        issue_id: user_id,
-        estimation: estimation,
-        timestamp: :os.system_time(:milli_seconds)
-      }
+#      Issue.set_estimation(issue_key, estimation);
+#      broadcast! socket, "estimation:set", %{
+#        issue_id: user_id,
+#        estimation: estimation,
+#        timestamp: :os.system_time(:milli_seconds)
+#      }
 
       {:noreply, socket}
     end
