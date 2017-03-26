@@ -1,10 +1,11 @@
 import {Socket, Presence} from 'phoenix';
 
 const cards = ['XS', 'S', 'M', 'L', 'XL'];
+const funCards = ['?'];
 
 class Estimation {
 
-    constructor(estimationName, user, playerListElem, cardDeckElem, issues, issueElem) {
+    constructor(estimationName, user, playerListElem, cardDeckElem, issues, issueElem, estimationElem) {
         this.estimationName = estimationName;
         this.user = user;
         this.issues = issues;
@@ -14,6 +15,7 @@ class Estimation {
         this.players = {};
         this.playerListElem = playerListElem;
         this.cardDeckElem = cardDeckElem;
+        this.estimationElem = estimationElem;
         this.currentModeratorId = null;
 
         this.renderCardDeck = this.renderCardDeck.bind(this);
@@ -24,6 +26,7 @@ class Estimation {
         this.setModerator = this.setModerator.bind(this);
         this.setVote = this.setVote.bind(this);
         this.getVoteOnCurrentIssue = this.getVoteOnCurrentIssue.bind(this);
+        this.setSelectedEstimation = this.setSelectedEstimation.bind(this);
     }
 
     initialize() {
@@ -41,14 +44,11 @@ class Estimation {
         this.estimation.on('presence_diff', state => {
             this.players = Presence.syncDiff(this.players, state);
             this.renderPlayers(this.players);
-            if (!this.currentModeratorId && Object.keys(this.players).length === 1) {
-                this.estimation.push('moderator:set', this.user.id);
-            }
         });
         this.estimation.join();
 
         this.cardDeckElem.addEventListener('click', e => {
-            if (!cards.includes(e.target.innerHTML)) {
+            if (!cards.concat(funCards).includes(e.target.innerHTML)) {
                 return;
             }
 
@@ -58,6 +58,14 @@ class Estimation {
         this.estimation.on('vote:new', state => {
             this.setVote(state.user_id, state.issue_key, state.vote);
             this.renderPlayers(this.players);
+            this.renderEstimation();
+            this.renderCardDeck();
+        });
+        this.estimation.on('vote:current', state => {
+            this.votes[state.issue_key] = state.votes;
+            this.renderPlayers(this.players);
+            this.renderEstimation();
+            this.renderCardDeck();
         });
         this.estimation.on('issue:current', state => {
             if (state.issue_key) {
@@ -74,6 +82,13 @@ class Estimation {
         });
         this.estimation.on('moderator:set', state => this.setModerator(state.moderator_id));
         this.estimation.on('moderator:current', state => this.setModerator(state.moderator_id));
+        this.estimation.on('estimation:set', state => {
+            console.log('estimation set from moderator', state);
+            $('.estimate-' + state.issue_key).html(state.estimation);
+            $('.save-estimate').addClass('blink_me');
+            setTimeout(() => $('.save-estimate').removeClass('blink_me'), 2000);
+
+        });
 
         this.renderCardDeck();
     }
@@ -91,8 +106,33 @@ class Estimation {
         this.currentIssueKey = issueKey;
         this.renderIssue(this.issues[this.currentIssueKey]);
         this.renderPlayers(this.players);
+        this.renderEstimation();
+        this.renderCardDeck();
+        $(`:radio[value=${this.currentIssueKey}]`).click();
         if (broadcast) {
             this.estimation.push('issue:set', {issue_key: issueKey});
+        }
+    }
+
+    setSelectedEstimation(e) {
+        console.log('set estimation', this.currentIssueKey, this.getCurrentEstimation());
+        this.estimation.push('estimation:set', {issue_key: this.currentIssueKey, estimation: this.getCurrentEstimation()});
+    }
+
+    getCurrentEstimation() {
+        return $('select[name=estimation]').val();
+    }
+
+    nextIssue() {
+        let found = false;
+        const next = Object.keys(this.issues).find(issue => {
+            if (found) { return true; }
+            found = issue  === this.currentIssueKey;
+            return false;
+        });
+
+        if (next) {
+            this.setCurrentIssueKey(next);
         }
     }
 
@@ -106,7 +146,6 @@ class Estimation {
         this.votes[this.currentIssueKey] = this.votes[this.currentIssueKey] || {};
         return this.votes[this.currentIssueKey][userId];
     }
-
 
     isModerator(userId) {
         if (!this.currentModeratorId) {
@@ -145,9 +184,9 @@ class Estimation {
     }
 
     renderCardDeck() {
-        const html = cards.map(card => `
-           <div class="card estimator-card">
-                <h3>${card}</h3>
+        const html = cards.concat(funCards).map(card => `
+           <div class="card estimator-card ${this.getVoteOnCurrentIssue(this.user.id) === card ? 'selected' : ''}">
+               <h3>${card}</h3>
             </div> 
         `).join('');
 
@@ -185,6 +224,34 @@ class Estimation {
         }
 
         return currentVote || '-';
+    }
+
+    renderEstimation() {
+        if (!this.isModerator(this.user.id) || !this.allPlayersVoted(this.players)) {
+            return;
+        }
+        const allVotes = this.formatPlayers(this.players)
+            .map(player => this.getVoteOnCurrentIssue(player.id));
+        const mostLikely = allVotes.reduce((counts, vote) => {
+            const count = (counts[vote + ''] || 0) + 1;
+            counts[vote + ''] = count;
+            if (count > counts.max) {
+                counts.max = count;
+                counts.vote = vote;
+            }
+            return counts;
+        }, {max: 0, vote: ''});
+        const mostLikelyVote = (mostLikely||{}).vote;
+
+        // todo: get most likely estimation
+        this.estimationElem.innerHTML = `
+           Estimation
+           <select name="estimation" class="form-control selectpicker"> 
+              ${cards.map(card => `<option value="${card}" ${card === mostLikelyVote ? 'selected' : ''}>${card}</option>`)}
+            </select>
+            <button class="btn btn-fill btn-success save-estimate" onclick="estimation.setSelectedEstimation(); return false">Save</button>
+            <button class="btn btn-success" onclick="estimation.nextIssue(); return false">Next issue</button>
+         `;
     }
 
     formatPlayers(players) {

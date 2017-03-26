@@ -32,8 +32,9 @@ defmodule Estimator.Web.PageController do
   end
 
   def estimated(conn, _params) do
-    # Todo: read estimated stories
-    render conn, current_user: get_session(conn, :current_user)
+    render conn,
+      issues: Issue.list_estimated(),
+      current_user: get_session(conn, :current_user)
   end
 
   def select_issues(conn, %{"selected_issue" => issues}) do

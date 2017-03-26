@@ -4,6 +4,7 @@
 /deps
 /*.ez
 .idea
+.DS_StorE
 
 # Generated on crash by the VM
 erl_crash.dump

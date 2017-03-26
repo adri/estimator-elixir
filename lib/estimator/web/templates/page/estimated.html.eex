@@ -6,18 +6,30 @@
     <p class="category">Overview over all estimated stories</p>
   </div>
   <div class="content table-responsive table-full-width">
-    <table class="table table-hover">
+    <table class="table table-hover estimate-table">
       <thead>
       <tr>
-        <td></td>
         <td>Key</td>
         <td>Summary</td>
         <td>Estimation</td>
       </tr>
       </thead>
       <tbody>
-
+          <%= if Enum.empty?(@issues) do %>
+              <tr>
+                <td colspan="3">No issues yet, <%= link 'let\'s estimate', to: page_path(@conn, :estimate) %>.</td>
+              </tr>
+          <% end %>
+          <%= for issue <- @issues do %>
+              <tr>
+                <td width="100"><a href="<%= issue.link %>" target="_blank"><%= issue.key %></a></td>
+                <td><%= issue.summary %></td>
+                <td><%= issue.estimation %></td>
+              </tr>
+          <% end %>
       </tbody>
     </table>
   </div>
 </div>
+
+

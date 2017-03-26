@@ -6,6 +6,7 @@ defmodule Estimator.Issue do
     SelectedIssue,
     IssueFromJira,
   }
+  alias Estimator.Api.Jira
 
   @spec list_selected :: [SelectedIssue.t]
   def list_selected do
@@ -19,9 +20,15 @@ defmodule Estimator.Issue do
   def list_to_estimate do
     SelectedIssue
     |> where(selected: true)
-    |> where([s], is_nil(s.estimation))
-    |> where([s], s.inserted_at >= ^Timex.beginning_of_day(Timex.now))
-    |> where([s], s.inserted_at <= ^Timex.end_of_day(Timex.now))
+    |> where([s], is_nil(s.estimation) or (not is_nil(s.estimation) and s.updated_at >= ^Timex.beginning_of_day(Timex.now) and s.updated_at <= ^Timex.end_of_day(Timex.now)))
+    |> order_by(desc: :inserted_at)
+    |> Repo.all
+  end
+
+  def list_estimated do
+    SelectedIssue
+    |> where(selected: true)
+    |> where([s], not is_nil(s.estimation))
     |> order_by(desc: :inserted_at)
     |> Repo.all
   end
@@ -34,12 +41,10 @@ defmodule Estimator.Issue do
     |> Repo.insert!
   end
 
-#  @spec set_estimation(String.t, String.t) ::
-#      {:ok, SelectedIssue.t} |
-#      {:error, Ecto.Changeset.t}
   def set_estimation(issue_key, estimation) do
+    Jira.set_estimation(issue_key, estimation)
     SelectedIssue
-    |> Repo.get(issue_key)
+    |> Repo.get_by(key: issue_key)
     |> SelectedIssue.changeset_update_estimation(%{key: issue_key, estimation: estimation})
     |> Repo.update
   end

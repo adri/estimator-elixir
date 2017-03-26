@@ -20,10 +20,10 @@ import Estimation from "./estimation"
 const playerList = document.getElementById('player-list');
 const cardDeck = document.getElementById('card-deck');
 const issue = document.getElementById('issue');
-let estimation;
+const estimationElem = document.getElementById('estimation');
 if (window.current_user && window.issues && playerList && cardDeck) {
-    estimation = new Estimation('estimation:ticketswap', window.current_user, playerList, cardDeck, window.issues, issue);
-    estimation.initialize();
+    window.estimation = new Estimation('estimation:ticketswap', window.current_user, playerList, cardDeck, window.issues, issue, estimationElem);
+    window.estimation.initialize();
 }
 
 $("#card-deck .card").on("touchstart", function(){
@@ -50,11 +50,8 @@ $("input[type='checkbox']").change(function (e) {
 
 $(document).ready(function() {
     $('.estimate-table tbody tr').click(function(event) {
-        $('.estimate-table tr').removeClass("ui-state-highlight");
-
         if (event.target.type !== 'radio') {
             $(':radio', this).trigger('click');
-            $(':radio', this).addClass("ui-state-highlight");
             if (typeof estimation !== 'undefined') {
                 estimation.setCurrentIssueKeyByUser($(':radio', this).val());
             }
@@ -63,9 +60,9 @@ $(document).ready(function() {
 });
 
 $("input[type='radio']").change(function (e) {
+    $('.estimate-table tr').removeClass("ui-state-highlight");
+
     if ($(this).is(":checked")) {
         $(this).closest('tr').addClass("ui-state-highlight");
-    } else {
-        $(this).closest('tr').removeClass("ui-state-highlight");
     }
 });

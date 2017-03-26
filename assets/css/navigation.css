@@ -3,11 +3,16 @@
     background-position: center center;
     background-size: contain;
     background-attachment: fixed;
+    /*background-repeat: no-repeat;*/
     margin-top: 0;
 }
 
 .navbar {
     margin-bottom: 0;
+}
+
+.navbar-brand {
+    text-shadow: 0 2px 3px rgba(0,0,0, 0.5);
 }
 
 .navbar-collapse.collapse {

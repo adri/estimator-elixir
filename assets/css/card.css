@@ -8,6 +8,10 @@
     padding: 20px;
 }
 
+.estimator-card.selected {
+    background: #dadada;
+}
+
 .card.mobileHoverFix {
     transition: all .1s ease-in-out;
     background: lightgray;

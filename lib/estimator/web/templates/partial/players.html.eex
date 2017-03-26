@@ -6,7 +6,7 @@
         <ul id="player-list" class="list-unstyled team-members"></ul>
         <div class="footer">
             <hr>
-            <div class="stats">
+            <div class="stats" id="estimation">
                 <!--<i class="ti-timer"></i> -->
                 Currently logged in members.
             </div>

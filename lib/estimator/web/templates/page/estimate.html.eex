@@ -2,7 +2,7 @@
 <div>
   <div class="row">
     <div class="col-md-8">
-      <div id="card-deck" class="card-container"></div>
+      <div id="card-deck" class="card-container rotating-card-container"></div>
 
       <div id="issue" class="card"></div>
     </div>
@@ -16,7 +16,7 @@
 <div class="card">
   <div class="header">
     <h4 class="title">All Issues to Estimate</h4>
-    <p class="category">Overview over all issues to estimate.</p>
+    <p class="category">Overview over all issues to estimate. Estimated issues stay until tomorrow.</p>
   </div>
   <div class="content table-responsive table-full-width">
     <script>
@@ -28,22 +28,24 @@
           <tr>
             <td>Key</td>
             <td>Summary</td>
+            <td>Estimation</td>
           </tr>
           </thead>
           <tbody>
               <%= if Enum.empty?(@selected_issues) do %>
               <tr>
-                <td colspan="2">No issues yet, <%= link 'check the backlog', to: page_path(@conn, :backlog) %>.</td>
+                <td colspan="3">No issues yet, <%= link 'check the backlog', to: page_path(@conn, :backlog) %>.</td>
               </tr>
               <% end %>
               <%= for issue <- @selected_issues do %>
                   <tr>
-                    <td width="100"><%= issue.key %></td>
+                    <td width="100"><a href="<%= issue.link %>" target="_blank"><%= issue.key %></a></td>
                     <td>
                         <%= issue.summary %>
                         <%= radio_button(form, :current_issue_key, issue.key, style: "display:none") %>
                         <script>window.issues['<%= issue.key %>'] = <%= raw(issue_json(issue)) %></script>
                     </td>
+                    <td class="estimate-<%= issue.key %>"><%= issue.estimation %></td>
                   </tr>
               <% end %>
           </tbody>

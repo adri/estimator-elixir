@@ -17,14 +17,20 @@ defmodule Estimator.Api.Jira do
     }
   end
 
-  def issue(issue_id) do
-    API.ticket_details(issue_id)
-  end
+  def set_estimation(issue_key, estimation) do
+    cardMap = %{
+      "XS" => 1,
+      "S" => 2,
+      "M" => 4,
+      "L" => 8,
+      "XL" => 16,
+    }
 
-  def add_estimation(estimation) do
-#    body = estimation |> Poison.encode!
-#    estimation_field
-#    API.post!("/rest/api/2/issue/#{key}/watchers", body, [{"Content-type", "application/json"}])
+    API.put!(
+      "/rest/api/2/issue/#{issue_key}",
+      Poison.encode!(%{ "fields" => %{"#{estimation_field}" => cardMap[estimation] } }),
+      [{"Content-type", "application/json"}]
+    )
   end
 
   defp estimation_field do
