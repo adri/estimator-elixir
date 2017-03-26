@@ -7,14 +7,6 @@
     font-weight: bold;
 }
 
-.vote-controls {
-    /*display: none;*/
-}
-
-.estimation {
-
-}
-
 .blink_me {
     animation: blinker 1s linear infinite;
 }

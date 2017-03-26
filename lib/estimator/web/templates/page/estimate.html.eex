@@ -2,7 +2,7 @@
 <div>
   <div class="row">
     <div class="col-md-8">
-      <div id="card-deck" class="card-container rotating-card-container"></div>
+      <div id="card-deck" class="card-container"></div>
 
       <div id="issue" class="card"></div>
     </div>
