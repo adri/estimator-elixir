@@ -33,7 +33,7 @@ class Estimation {
         this.socket = new Socket('/socket', { params: {
             user: this.user,
         } });
-        this.socket.connect();
+        this.socket.connect()e
 
         this.estimation = this.socket.channel(this.estimationName);
         this.estimation.on('players_state', state => {
@@ -200,7 +200,7 @@ class Estimation {
                     <img src="${player.avatar || '/images/faces/face-0.jpg'}" alt="${player.name}" width="50" class="media-object img-circle img-no-padding">
                   </div>
                   <div class="media-body">
-                    <h5 class="media-heading">${player.name} ${player.id}</h5>
+                    <h5 class="media-heading">${player.name}</h5>
                     ${this.isModerator(player.id) ? `<span class="text-danger"><small>Moderator</small></span>` : ''}
                     <span class="text-success"><small>Last action ${player.joinedAt}</small></span>
                   </div>
