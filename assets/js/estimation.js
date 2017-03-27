@@ -30,7 +30,6 @@ class Estimation {
     }
 
     initialize() {
-        this.user.id = 'adri' + window.location.hash;
         this.socket = new Socket('/socket', { params: {
             user: this.user,
         } });
