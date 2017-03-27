@@ -33,7 +33,7 @@ class Estimation {
         this.socket = new Socket('/socket', { params: {
             user: this.user,
         } });
-        this.socket.connect()e
+        this.socket.connect()
 
         this.estimation = this.socket.channel(this.estimationName);
         this.estimation.on('players_state', state => {
