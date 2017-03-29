@@ -8,7 +8,7 @@ defmodule Estimator.Web.PageController do
   plug Ueberauth
 
   def login(conn, _params) do
-    render conn, current_user: get_session(conn, :current_user)
+    render conn, current_user: false
   end
 
   def backlog(conn, _params) do
