@@ -11,18 +11,19 @@ defmodule Estimator.Api.Jira do
     ConCache.delete(:jira_backlog, board_id)
   end
 
-  defp fetch_backlog(board_id) do
-    fields = "summary,description,priority,issuetype,status,#{estimation_field()}"
-    expand = "renderedFields"
-    API.get!("/rest/agile/1.0/board/#{board_id}/backlog?fields=#{fields}&expand=#{expand}").body
+  def backlog_filter(backlog, without_issues) do
+    keys = Enum.map(without_issues, &(&1.key))
+    filtered_issues = backlog["issues"]
+      |> Enum.filter(&(!Enum.member?(keys, &1["key"])))
+
+    put_in(backlog, ["issues"], filtered_issues)
   end
 
-  def backlog_filter(backlog, selected_issues) do
-    keys = Enum.map(selected_issues, &(&1.key))
+  def backlog_filter_estimated(backlog) do
+    filtered_issues = backlog["issues"]
+      |> Enum.filter(&(is_nil &1["fields"][estimation_field()]))
 
-    %{backlog |
-      "issues" => backlog["issues"] |> Enum.filter(&(!Enum.member?(keys, &1["key"])))
-    }
+    put_in(backlog, ["issues"], filtered_issues)
   end
 
   def set_estimation(issue_key, estimation) do
@@ -35,5 +36,13 @@ defmodule Estimator.Api.Jira do
 
   def estimation_field do
     Application.get_env(:jira, :estimation_field, System.get_env("JIRA_ESTIMATION_FIELD"))
+  end
+
+  # ---
+
+  defp fetch_backlog(board_id) do
+    fields = "summary,description,priority,issuetype,status,#{estimation_field()}"
+    expand = "renderedFields"
+    API.get!("/rest/agile/1.0/board/#{board_id}/backlog?fields=#{fields}&expand=#{expand}").body
   end
 end

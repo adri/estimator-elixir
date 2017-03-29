@@ -50,6 +50,7 @@
               name: "<%= @current_user.name %>",
               avatar: "<%= @current_user.avatar %>",
           };
+          window.board_id = "<%= @board_id %>";
         </script>
     <% end %>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

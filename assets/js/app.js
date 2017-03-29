@@ -21,8 +21,16 @@ const playerList = document.getElementById('player-list');
 const cardDeck = document.getElementById('card-deck');
 const issue = document.getElementById('issue');
 const estimationElem = document.getElementById('estimation');
-if (window.current_user && window.issues && playerList && cardDeck) {
-    window.estimation = new Estimation('estimation:ticketswap', window.current_user, playerList, cardDeck, window.issues, issue, estimationElem);
+if (window.current_user && window.board_id && window.issues && playerList && cardDeck) {
+    window.estimation = new Estimation(
+        'estimation:' + window.board_id,
+        window.current_user,
+        playerList,
+        cardDeck,
+        window.issues,
+        issue,
+        estimationElem
+    );
     window.estimation.initialize();
 }
 

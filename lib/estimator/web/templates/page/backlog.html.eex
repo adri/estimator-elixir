@@ -1,13 +1,13 @@
-<%= partial "sub_navigation.html", active: :backlog %>
+<%= partial "sub_navigation.html", conn: @conn, board_id: @board_id, active: :backlog %>
 
 <div class="card">
-    <%= form_for @changeset, page_path(@conn, :select_issues), fn form -> %>
+    <%= form_for @changeset, page_path(@conn, :select_issues, @board_id), fn form -> %>
         <div class="header">
             <h4 class="title">JIRA Backlog</h4>
             <p class="category">Please select which stories to estimate</p>
         </div>
         <div class="content">
-            <%= link "Refresh", to: page_path(@conn, :backlog_refresh), class: "btn btn-success pull-right" %>
+            <%= link "Refresh", to: page_path(@conn, :backlog_refresh, @board_id), class: "btn btn-success pull-right" %>
             <%= submit "Select issues", class: "btn btn-fill btn-success backlog-submit" %>
         </div>
         <div class="content table-responsive table-full-width">

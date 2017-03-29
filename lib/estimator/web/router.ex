@@ -26,13 +26,16 @@ defmodule Estimator.Web.Router do
   scope "/", Estimator.Web do
     pipe_through [:browser, :browser_auth]
 
-    get "/", PageController, :backlog
-    get "/backlog", PageController, :backlog
-    get "/backlog/refresh", PageController, :backlog_refresh
-    get "/estimate", PageController, :estimate
-    get "/estimated", PageController, :estimated
-    get "/issues/:issue_key/deselect", PageController, :deselect_issue
-    post "/issues/select", PageController, :select_issues
+    get "/", PageController, :index
+
+    scope "/board/:board_id" do
+      get "/backlog", PageController, :backlog
+      get "/backlog/refresh", PageController, :backlog_refresh
+      get "/estimate", PageController, :estimate
+      get "/estimated", PageController, :estimated
+      get "/issues/:issue_key/deselect", PageController, :deselect_issue
+      post "/issues/select", PageController, :select_issues
+    end
   end
 
   scope "/auth", Estimator.Web do

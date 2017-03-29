@@ -11,6 +11,5 @@ defmodule Estimator.Repo.Migrations.CreateVotes do
 
       timestamps()
     end
-
   end
 end

@@ -8,43 +8,52 @@ defmodule Estimator.Issue do
   }
   alias Estimator.Api.Jira
 
-  @spec list_selected :: [SelectedIssue.t]
-  def list_selected do
+  def list_selected(board_id) do
     SelectedIssue
     |> where(selected: true)
+    |> where(board_id: ^board_id)
     |> order_by(desc: :inserted_at)
     |> Repo.all
   end
 
-  @spec list_to_estimate :: [SelectedIssue.t]
-  def list_to_estimate do
+  def list_to_estimate(board_id) do
     SelectedIssue
     |> where(selected: true)
-    |> where([s], is_nil(s.estimation) or (not is_nil(s.estimation) and s.updated_at >= ^Timex.beginning_of_day(Timex.now) and s.updated_at <= ^Timex.end_of_day(Timex.now)))
+    |> where(board_id: ^board_id)
+    |> where([s], is_nil(s.estimation)
+      or (not is_nil(s.estimation)
+        and s.updated_at >= ^Timex.beginning_of_day(Timex.now)
+        and s.updated_at <= ^Timex.end_of_day(Timex.now)))
     |> order_by(desc: :inserted_at)
     |> Repo.all
+  end
+
+  def list_estimated(board_id) do
+    SelectedIssue
+    |> where(selected: true)
+    |> where(board_id: ^board_id)
+    |> where([s], not is_nil(s.estimation))
+    |> order_by(desc: :inserted_at)
+    |> Repo.all
+  end
+
+  def import_issues_from_jira(board_id, selected_issues) do
+    board_id
+    |> Jira.backlog
+    |> get_in(["issues"])
+    |> Enum.filter(&(Enum.member?(selected_issues, &1["key"])))
+    |> Enum.each(&(insert_jira_issue(board_id, &1)))
+  end
+
+  def insert_jira_issue(board_id, params) do
+    IssueFromJira.create(board_id, params)
+    |> Repo.insert!
   end
 
   def deselect(issue_key) do
     SelectedIssue
     |> where(key: ^issue_key)
     |> Repo.delete_all
-  end
-
-  def list_estimated do
-    SelectedIssue
-    |> where(selected: true)
-    |> where([s], not is_nil(s.estimation))
-    |> order_by(desc: :inserted_at)
-    |> Repo.all
-  end
-
-  @spec insert_jira_issue(map) ::
-      {:ok, SelectedIssue.t} |
-      {:error, Ecto.Changeset.t}
-  def insert_jira_issue(params) do
-    IssueFromJira.create(params)
-    |> Repo.insert!
   end
 
   def set_estimation(issue_key, estimation) do

@@ -4,6 +4,7 @@ defmodule Estimator.Issue.SelectedIssue do
 
   schema "selected_issues" do
     field :key, :string
+    field :board_id, :integer
     field :link, :string
     field :selected, :boolean, default: false
     field :summary, :string
@@ -19,8 +20,8 @@ defmodule Estimator.Issue.SelectedIssue do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:key, :link, :selected, :summary, :description, :raw])
-    |> validate_required([:key, :link, :selected, :summary, :description, :raw])
+    |> cast(params, [:key, :board_id, :link, :selected, :summary, :description, :raw])
+    |> validate_required([:key, :board_id, :link, :selected, :summary, :description, :raw])
   end
 
   def changeset_update_estimation(struct, params \\ %{}) do

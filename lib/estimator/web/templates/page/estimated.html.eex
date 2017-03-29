@@ -1,4 +1,4 @@
-<%= partial "sub_navigation.html", active: :estimated %>
+<%= partial "sub_navigation.html", conn: @conn, board_id: @board_id, active: :estimated %>
 
 <div class="card">
   <div class="header">
@@ -17,7 +17,7 @@
       <tbody>
           <%= if Enum.empty?(@issues) do %>
               <tr>
-                <td colspan="3">No issues yet, <%= link 'let\'s estimate', to: page_path(@conn, :estimate) %>.</td>
+                <td colspan="3">No issues yet, <%= link 'let\'s estimate', to: page_path(@conn, :estimate, @board_id) %>.</td>
               </tr>
           <% end %>
           <%= for issue <- @issues do %>

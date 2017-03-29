@@ -1,4 +1,5 @@
-<%= partial "sub_navigation.html", active: :estimate %>
+<%= partial "sub_navigation.html", conn: @conn, board_id: @board_id, active: :estimate %>
+
 <div>
   <div class="row">
     <div class="col-md-8">
@@ -22,7 +23,7 @@
     <script>
       window.issues = {};
     </script>
-    <%= form_for @changeset, page_path(@conn, :select_issues), fn form -> %>
+    <%= form_for @changeset, page_path(@conn, :select_issues, @board_id), fn form -> %>
         <table class="table table-hover estimate-table">
           <thead>
           <tr>
@@ -34,7 +35,7 @@
           <tbody>
               <%= if Enum.empty?(@selected_issues) do %>
               <tr>
-                <td colspan="3">No issues yet, <%= link 'check the backlog', to: page_path(@conn, :backlog) %>.</td>
+                <td colspan="3">No issues yet, <%= link 'check the backlog', to: page_path(@conn, :backlog, @board_id) %>.</td>
               </tr>
               <% end %>
               <%= for issue <- @selected_issues do %>
@@ -48,7 +49,7 @@
                     <td class="estimate-<%= issue.key %>">
                         <%= issue.estimation %>
                         <%= link "deselect",
-                            to: page_path(@conn, :deselect_issue, issue.key),
+                            to: page_path(@conn, :deselect_issue, @board_id, issue.key),
                             class: "btn btn-sm btn-success" %>
                     </td>
                   </tr>

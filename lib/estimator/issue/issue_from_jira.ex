@@ -1,9 +1,10 @@
 defmodule Estimator.Issue.IssueFromJira do
   alias Estimator.Issue.SelectedIssue
 
-  def create(jira_issue) do
+  def create(board_id, jira_issue) do
     %SelectedIssue{
       key: jira_issue["key"],
+      board_id: String.to_integer(board_id),
       link: link(jira_issue),
       selected: true,
       summary: jira_issue["fields"]["summary"],

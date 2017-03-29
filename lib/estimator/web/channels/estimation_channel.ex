@@ -1,5 +1,6 @@
 defmodule Estimator.Web.EstimationChannel do
   use Estimator.Web, :channel
+  @topic_prefix "estimation:"
 
  alias Estimator.{
     Moderator,
@@ -10,7 +11,7 @@ defmodule Estimator.Web.EstimationChannel do
     Web.Presence,
   }
 
-  def join("estimation:ticketswap", _params, socket) do
+  def join(@topic_prefix <> _board_id, _params, socket) do
     send self(), :after_join
 
     {:ok, socket}
@@ -30,13 +31,6 @@ defmodule Estimator.Web.EstimationChannel do
 
     {:noreply, socket}
   end
-
-#  def leave(_other, _params, socket) do
-#    if (socket.assigns.user["id"] == Moderator.get_for_topic(socket.topic)) do
-#      Moderator.set_for_topic(socket.topic, nil)
-#    end
-#    socket
-#  end
 
   def handle_in("vote:new", message, socket) do
     {:ok, vote} = Votes.insert_vote(%{
@@ -109,7 +103,7 @@ defmodule Estimator.Web.EstimationChannel do
 
   defp send_current_votes(socket) do
      issue = CurrentIssue.get_for_topic(socket.topic)
-     Issue.list_to_estimate
+     Issue.list_to_estimate(board_id(socket))
       |> Enum.map(&(&1.key))
       |> Enum.each(fn issue ->
        push socket, "vote:current", %{
@@ -119,6 +113,11 @@ defmodule Estimator.Web.EstimationChannel do
       end)
 
      socket
+  end
+
+  defp board_id(socket) do
+    @topic_prefix <> board_id = socket.topic
+    board_id
   end
 
   defp user_id(socket) do

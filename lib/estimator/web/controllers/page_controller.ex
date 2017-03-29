@@ -11,60 +11,62 @@ defmodule Estimator.Web.PageController do
     render conn, current_user: false
   end
 
-  def backlog(conn, _params) do
-    backlog = board_id()
-      |> Jira.backlog
-      |> Jira.backlog_filter(Issue.list_selected)
 
-    render conn,
-      backlog: backlog,
-      current_user: get_session(conn, :current_user),
-      changeset: SelectedIssue.changeset(%SelectedIssue{})
+  def index(conn, _params) do
+    redirect(conn, to: page_path(conn, :backlog, board_id()))
   end
 
-  def backlog_refresh(conn, _params) do
-    Jira.invalidate_backlog(board_id())
+  def backlog(conn, %{"board_id" => board_id}) do
+    backlog = board_id
+      |> Jira.backlog
+      |> Jira.backlog_filter(Issue.list_selected(board_id))
+      |> Jira.backlog_filter_estimated
+
+    template conn, board_id, backlog: backlog
+  end
+
+  def backlog_refresh(conn, %{"board_id" => board_id}) do
+    Jira.invalidate_backlog(board_id)
 
     conn
       |> put_flash(:success, "Updated issues from Jira")
-      |> redirect(to: page_path(conn, :backlog))
+      |> redirect(to: page_path(conn, :backlog, board_id))
   end
 
-  def estimate(conn, _params) do
-    render conn,
-      current_user: get_session(conn, :current_user),
-      selected_issues: Issue.list_to_estimate(),
-      changeset: SelectedIssue.changeset(%SelectedIssue{})
+  def estimate(conn, %{"board_id" => board_id}) do
+    template conn, board_id, selected_issues: Issue.list_to_estimate(board_id)
   end
 
-  def estimated(conn, _params) do
-    render conn,
-      issues: Issue.list_estimated(),
-      current_user: get_session(conn, :current_user)
+  def estimated(conn, %{"board_id" => board_id}) do
+    template conn, board_id, issues: Issue.list_estimated(board_id)
   end
 
-  def select_issues(conn, %{"selected_issue" => issues}) do
-    issues = for {issue, selected} <- issues, selected == "true", do: issue
+  def select_issues(conn, %{"selected_issue" => issues, "board_id" => board_id}) do
+    selected_issues = for {issue, selected} <- issues, selected == "true", do: issue
+    Issue.import_issues_from_jira(board_id, selected_issues)
 
-    Jira.backlog(board_id())["issues"]
-      |> Enum.filter(&(Enum.member?(issues, &1["key"])))
-      |> Enum.each(&(Issue.insert_jira_issue(&1)))
-
-    success(conn, "Issue selected", page_path(conn, :estimate))
+    success(conn, "Issue selected", page_path(conn, :estimate, board_id))
   end
 
-  def deselect_issue(conn, %{"issue_key" => issue_key}) do
+  def deselect_issue(conn, %{"issue_key" => issue_key, "board_id" => board_id}) do
     Issue.deselect(issue_key)
 
-    success(conn, "Issue deselected", page_path(conn, :estimate))
+    success(conn, "Issue deselected", page_path(conn, :estimate, board_id))
   end
 
   def unauthenticated(conn, _) do
-      conn
-      |> redirect(to: "/login")
+    redirect(conn, to: "/login")
   end
 
  # ---
+
+ defp template(conn, board_id, assigns) do
+    render conn, Keyword.merge(assigns, [
+        current_user: get_session(conn, :current_user),
+        changeset: SelectedIssue.changeset(%SelectedIssue{}),
+        board_id: board_id
+      ])
+ end
 
   defp board_id do
     Application.get_env(:jira, :board_id, System.get_env("JIRA_BOARD_ID"))
