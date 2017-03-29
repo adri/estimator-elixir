@@ -42,7 +42,8 @@ defmodule Estimator.Mixfile do
      {:con_cache, "~> 0.12.0"},
      {:guardian, "~> 0.14"},
      {:timex, "~> 3.0"},
-     {:timex_ecto, "~> 3.0"}
+     {:timex_ecto, "~> 3.0"},
+     {:credo, "~> 0.3", only: [:dev, :test]}
      ]
   end
 

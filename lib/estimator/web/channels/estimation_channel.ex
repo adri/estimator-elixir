@@ -1,13 +1,13 @@
 defmodule Estimator.Web.EstimationChannel do
   use Estimator.Web, :channel
 
-  alias Estimator.Web.Presence
-  alias Estimator.{
+ alias Estimator.{
     Moderator,
     Votes,
     Issue,
     Issue.CurrentIssue,
     Web.VoteView,
+    Web.Presence,
   }
 
   def join("estimation:ticketswap", _params, socket) do
@@ -33,7 +33,7 @@ defmodule Estimator.Web.EstimationChannel do
 
 #  def leave(_other, _params, socket) do
 #    if (socket.assigns.user["id"] == Moderator.get_for_topic(socket.topic)) do
-#      Moderator.set_for_topic(socket.topic, nil);
+#      Moderator.set_for_topic(socket.topic, nil)
 #    end
 #    socket
 #  end
@@ -46,7 +46,6 @@ defmodule Estimator.Web.EstimationChannel do
        vote: message["vote"],
     })
 
-    IO.inspect vote
     broadcast! socket, "vote:new", VoteView.render("vote.json", vote)
 
     {:noreply, socket}
@@ -54,7 +53,7 @@ defmodule Estimator.Web.EstimationChannel do
 
   def handle_in("issue:set", message, socket) do
     CurrentIssue.set_for_topic(message["issue_key"], socket.topic)
-    broadcast! socket, "issue:set", %{ issue_key: message["issue_key"] }
+    broadcast! socket, "issue:set", %{issue_key: message["issue_key"]}
 
     {:noreply, socket}
   end
@@ -70,7 +69,7 @@ defmodule Estimator.Web.EstimationChannel do
   end
 
   def handle_in("estimation:set", %{"issue_key" => issue_key, "estimation" => estimation}, socket) do
-      Issue.set_estimation(issue_key, estimation);
+      Issue.set_estimation(issue_key, estimation)
       broadcast! socket, "estimation:set", %{
         issue_key: issue_key,
         estimation: estimation,

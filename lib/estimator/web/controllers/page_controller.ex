@@ -3,10 +3,7 @@ defmodule Estimator.Web.PageController do
 
   alias Estimator.Api.Jira
   alias Estimator.Issue
-  alias Estimator.Issue.{
-    SelectedIssue,
-    IssueFromJira
-  }
+  alias Estimator.Issue.SelectedIssue
 
   plug Ueberauth
 
@@ -15,13 +12,22 @@ defmodule Estimator.Web.PageController do
   end
 
   def backlog(conn, _params) do
-    backlog = Jira.backlog(board_id())
+    backlog = board_id()
+      |> Jira.backlog
       |> Jira.backlog_filter(Issue.list_selected)
 
     render conn,
       backlog: backlog,
       current_user: get_session(conn, :current_user),
       changeset: SelectedIssue.changeset(%SelectedIssue{})
+  end
+
+  def backlog_refresh(conn, _params) do
+    Jira.invalidate_backlog(board_id())
+
+    conn
+      |> put_flash(:success, "Updated issues from Jira")
+      |> redirect(to: page_path(conn, :backlog))
   end
 
   def estimate(conn, _params) do
@@ -39,9 +45,10 @@ defmodule Estimator.Web.PageController do
 
   def select_issues(conn, %{"selected_issue" => issues}) do
     issues = for {issue, selected} <- issues, selected == "true", do: issue
+
     Jira.backlog(board_id())["issues"]
-      |> Enum.filter(&(Enum.member?(issues, &1["key"]) ))
-      |> Enum.map(&(Issue.insert_jira_issue(&1)))
+      |> Enum.filter(&(Enum.member?(issues, &1["key"])))
+      |> Enum.each(&(Issue.insert_jira_issue(&1)))
 
     success(conn, "Issue selected", page_path(conn, :estimate))
   end

@@ -17,7 +17,7 @@ defmodule Estimator.Application do
       supervisor(Estimator.Web.Presence, []),
       supervisor(Estimator.Moderator, []),
       supervisor(Estimator.Issue.CurrentIssue, []),
-      supervisor(ConCache, [[ttl: :timer.seconds(3600)], [name: :jia_backlog]])
+      supervisor(ConCache, [[ttl: :timer.seconds(3600)], [name: :jira_backlog]])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

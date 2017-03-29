@@ -26,6 +26,5 @@ defmodule Estimator.Votes do
         { user_id, List.first(vote).vote }
       end)
       |> Enum.into(%{})
-      |> IO.inspect
   end
 end

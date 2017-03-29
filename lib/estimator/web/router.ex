@@ -28,6 +28,7 @@ defmodule Estimator.Web.Router do
 
     get "/", PageController, :backlog
     get "/backlog", PageController, :backlog
+    get "/backlog/refresh", PageController, :backlog_refresh
     get "/estimate", PageController, :estimate
     get "/estimated", PageController, :estimated
     post "/issues/select", PageController, :select_issues

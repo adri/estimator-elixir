@@ -2,7 +2,6 @@ defmodule Estimator.Web.AuthController do
   use Estimator.Web, :controller
   plug Ueberauth
 
-  alias Ueberauth.Strategy.Helpers
   alias Estimator.User.UserFromAuth
 
   def delete(conn, _params) do

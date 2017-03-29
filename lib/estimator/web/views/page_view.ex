@@ -5,6 +5,13 @@ defmodule Estimator.Web.PageView do
     render(Estimator.Web.PartialView, template, assigns)
   end
 
+  def estimation_field do
+    Estimator.Api.Jira.estimation_field()
+  end
+
+  def estimation_to_card(estimation) do
+    Estimator.Vote.Card.to_card(estimation)
+  end
 
   def jira_link(issue) do
     Estimator.Issue.IssueFromJira.link(issue)

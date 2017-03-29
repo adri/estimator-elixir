@@ -7,6 +7,7 @@
             <p class="category">Please select which stories to estimate</p>
         </div>
         <div class="content">
+            <%= link "Refresh", to: page_path(@conn, :backlog_refresh), class: "btn btn-success pull-right" %>
             <%= submit "Select issues", class: "btn btn-fill btn-success backlog-submit" %>
         </div>
         <div class="content table-responsive table-full-width">
@@ -30,7 +31,7 @@
                              target="_blank"><%= issue["key"] %></a>
                       </td>
                       <td><%= issue["fields"]["summary"] %></td>
-                      <td><%= issue["fields"]["customfield_10026"] %></td>
+                      <td><%= estimation_to_card(issue["fields"][estimation_field()]) %></td>
                     </tr>
                 <% end %>
                 </tbody>

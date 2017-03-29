@@ -1,8 +1,6 @@
 defmodule Estimator.Web.VoteView do
   use Estimator.Web, :view
 
-  alias Estimator.Vote.Vote
-
   def render("vote.json", vote) do
     %{
       issue_key: vote.issue_key,
@@ -11,5 +9,4 @@ defmodule Estimator.Web.VoteView do
       timestamp: :os.system_time(:milli_seconds),
     }
   end
-
 end
