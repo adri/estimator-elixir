@@ -30,3 +30,21 @@
 .jira-content a {
     color: #3b73af;
 }
+
+.jira-content .confluenceTable {
+    border-collapse: collapse;
+    margin: 5px 0 5px 2px;
+    width: auto;
+}
+
+.jira-content .confluenceTh {
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+    padding: 3px 4px;
+    text-align: center;
+}
+
+.jira-content .confluenceTd {
+    border: 1px solid #ccc;
+    padding: 3px 4px;
+}

@@ -45,11 +45,16 @@
                         <%= radio_button(form, :current_issue_key, issue.key, style: "display:none") %>
                         <script>window.issues['<%= issue.key %>'] = <%= raw(issue_json(issue)) %></script>
                     </td>
-                    <td class="estimate-<%= issue.key %>"><%= issue.estimation %></td>
+                    <td class="estimate-<%= issue.key %>">
+                        <%= issue.estimation %>
+                        <%= link "deselect",
+                            to: page_path(@conn, :deselect_issue, issue.key),
+                            class: "btn btn-sm btn-success" %>
+                    </td>
                   </tr>
               <% end %>
           </tbody>
         </table>
-    <% end %>
+      <% end %>
   </div>
 </div>

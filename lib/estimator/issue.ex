@@ -25,6 +25,12 @@ defmodule Estimator.Issue do
     |> Repo.all
   end
 
+  def deselect(issue_key) do
+    SelectedIssue
+    |> where(key: ^issue_key)
+    |> Repo.delete_all
+  end
+
   def list_estimated do
     SelectedIssue
     |> where(selected: true)
