@@ -17,7 +17,7 @@
       <tbody>
           <%= if Enum.empty?(@issues) do %>
               <tr>
-                <td colspan="3">No issues yet, <%= link 'let\'s estimate', to: page_path(@conn, :estimate, @board_id) %>.</td>
+                <td colspan="3">No issues yet, <%= link 'lets estimate', to: page_path(@conn, :estimate, @board_id) %>.</td>
               </tr>
           <% end %>
           <%= for issue <- @issues do %>
