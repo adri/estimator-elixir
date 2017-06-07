@@ -9,6 +9,9 @@ use Mix.Config
 config :estimator,
   ecto_repos: [Estimator.Repo]
 
+config :estimator, Estimator.Repo,
+  loggers: [PryIn.EctoLogger, Ecto.LogEntry]
+
 # Configures the endpoint
 config :estimator, Estimator.Web.Endpoint,
   url: [host: "localhost"],
