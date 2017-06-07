@@ -11,7 +11,6 @@ defmodule Estimator.Web.PageController do
     render conn, current_user: false
   end
 
-
   def index(conn, _params) do
     redirect(conn, to: page_path(conn, :backlog, board_id()))
   end
@@ -22,7 +21,7 @@ defmodule Estimator.Web.PageController do
       |> Jira.backlog_filter(Issue.list_selected(board_id))
       |> Jira.backlog_filter_estimated
 
-    template conn, board_id, backlog: backlog
+    template(conn, board_id, backlog: backlog)
   end
 
   def backlog_refresh(conn, %{"board_id" => board_id}) do
@@ -34,11 +33,11 @@ defmodule Estimator.Web.PageController do
   end
 
   def estimate(conn, %{"board_id" => board_id}) do
-    template conn, board_id, selected_issues: Issue.list_to_estimate(board_id)
+    template(conn, board_id, selected_issues: Issue.list_to_estimate(board_id))
   end
 
   def estimated(conn, %{"board_id" => board_id}) do
-    template conn, board_id, issues: Issue.list_estimated(board_id)
+    template(conn, board_id, issues: Issue.list_estimated(board_id))
   end
 
   def select_issues(conn, %{"selected_issue" => issues, "board_id" => board_id}) do

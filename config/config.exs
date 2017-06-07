@@ -14,6 +14,7 @@ config :estimator, Estimator.Web.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "2+nLPwNw0i/b/03tm21Utu/uZC1VN8lSG/VgMmMxy2gw5N1C6KCdstgTGQljZuKg",
   render_errors: [view: Estimator.Web.ErrorView, accepts: ~w(html json)],
+  instrumenters: [PryIn.Instrumenter],
   pubsub: [name: Estimator.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
@@ -31,6 +32,12 @@ config :guardian, Guardian,
   verify_issuer: true, # optional
   secret_key: "2+nLPwNw0i/b/03tm21Utu/uZC1VN8lSG/VgMmMxy2gw5N1C6KCdstgTGQljZuKg",
   serializer: Estimator.GuardianSerializer
+
+config :pryin,
+  otp_app: :estimator,
+  api_key: "j29oa4142c8q33sogifnm1qgsab3fvtif4r3spl90c2or5jr",
+  enabled: false,
+  env: :dev
 
 # Configures Elixir's Logger
 config :logger, :console,

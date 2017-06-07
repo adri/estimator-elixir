@@ -38,6 +38,9 @@ config :ueberauth, Ueberauth.Strategy.Github.OAuth,
 config :guardian, Guardian,
   secret_key: System.get_env("SECRET_KEY_BASE")
 
+config :pryin,
+  enabled: true,
+  env: :prod
 
 # ## SSL Support
 #

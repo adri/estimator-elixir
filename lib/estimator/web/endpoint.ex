@@ -38,6 +38,7 @@ defmodule Estimator.Web.Endpoint do
     key: "_estimator_key",
     signing_salt: "tex9gNL8"
 
+  plug PryIn.Plug
   plug Estimator.Web.Router
 
   @doc """

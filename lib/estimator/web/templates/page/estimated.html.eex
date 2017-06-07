@@ -2,7 +2,7 @@
 
 <div class="card">
   <div class="header">
-    <h4 class="title">Estimated stories</h4>
+    <h4 class="title">Estimated Issues</h4>
     <p class="category">Overview over all estimated stories</p>
   </div>
   <div class="content table-responsive table-full-width">
