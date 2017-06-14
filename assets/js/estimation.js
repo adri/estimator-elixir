@@ -262,7 +262,6 @@ class Estimation {
         }, {max: 0, vote: ''});
         const mostLikelyVote = (mostLikely||{}).vote;
 
-        console.log(mostLikely);
         // todo: get most likely estimation
         this.estimationElem.innerHTML = `
            Estimation
