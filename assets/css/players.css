@@ -14,3 +14,13 @@
 @keyframes blinker {
     50% { opacity: 0; }
 }
+
+.player .set_moderator {
+    display: none;
+    overflow: hidden;
+    transition: display .25s;
+}
+
+.player:hover .set_moderator {
+    display: block;
+}

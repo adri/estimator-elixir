@@ -154,11 +154,15 @@ class Estimation {
         return userId === this.currentModeratorId;
     }
 
-    setModerator(userId) {
+    setModerator(userId, broadcast = false) {
         console.log('set moderator', userId);
         this.currentModeratorId = userId;
         this.renderPlayers(this.players);
         this.renderCardDeck();
+        this.renderEstimation();
+        if (broadcast) {
+            this.estimation.push('moderator:set', userId);
+        }
     }
 
     allPlayersVoted(players) {
@@ -193,23 +197,32 @@ class Estimation {
     }
 
     renderPlayers(players) {
-        this.playerListElem.innerHTML = this.formatPlayers(players).map(player => `
-            <li>
-                <div class="media">
-                  <div class="media-left">
-                    <img src="${player.avatar || '/images/faces/face-0.jpg'}" alt="${player.name}" width="50" class="media-object img-circle img-no-padding">
-                  </div>
-                  <div class="media-body">
-                    <h5 class="media-heading">${player.name}</h5>
-                    ${this.isModerator(player.id) ? `<span class="text-danger"><small>Moderator</small></span>` : ''}
-                    <span class="text-success"><small>Last action ${player.joinedAt} ${player.device || ''}</small></span>
-                  </div>
-                  <div class="media-right vote-container">
-                    <span class="vote">${this.renderVote(player)}</span>
-                  </div>
-                </div>
-            </li>
-         `).join('');
+        this.playerListElem.innerHTML = this.formatPlayers(players).map(player => {
+            const setModerator = this.isModerator(this.user.id) ? `
+                <button 
+                    class="btn btn-sm btn-success set_moderator" 
+                    onclick="estimation.setModerator('${player.id}', true); return false">
+                    <small>Set as moderator</small>
+                </button>` : '';
+            return `
+                <li>
+                    <div class="media player">
+                      <div class="media-left">
+                        <img src="${player.avatar || '/images/faces/face-0.jpg'}" alt="${player.name}" width="50" class="media-object img-circle img-no-padding">
+                      </div>
+                      <div class="media-body">
+                        <h5 class="media-heading">${player.name}</h5>
+                        ${this.isModerator(player.id) ? `<span class="text-danger"><small>Moderator</small></span>` : ''}
+                        <span class="text-success"><small>Last action ${player.joinedAt}</small></span>
+                        ${setModerator}
+                      </div>
+                      <div class="media-right vote-container">
+                        <span class="vote">${this.renderVote(player)}</span>
+                      </div>
+                    </div>
+                </li>
+             `;
+        }).join('');
     }
 
     renderVote(player) {
@@ -226,15 +239,22 @@ class Estimation {
     }
 
     renderEstimation() {
-        if (!this.isModerator(this.user.id) || !this.allPlayersVoted(this.players)) {
+        if (!this.isModerator(this.user.id)) {
+            this.estimationElem.innerHTML = `Currently logged in members.`;
             return;
         }
+
+        if (!this.allPlayersVoted(this.players)) {
+            this.estimationElem.innerHTML = `Waiting for players to vote.`;
+            return;
+        }
+
         const allVotes = this.formatPlayers(this.players)
             .map(player => this.getVoteOnCurrentIssue(player.id));
         const mostLikely = allVotes.reduce((counts, vote) => {
             const count = (counts[vote + ''] || 0) + 1;
             counts[vote + ''] = count;
-            if (count > counts.max) {
+            if (count > counts.max && vote) {
                 counts.max = count;
                 counts.vote = vote;
             }
@@ -242,6 +262,7 @@ class Estimation {
         }, {max: 0, vote: ''});
         const mostLikelyVote = (mostLikely||{}).vote;
 
+        console.log(mostLikely);
         // todo: get most likely estimation
         this.estimationElem.innerHTML = `
            Estimation

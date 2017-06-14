@@ -8,7 +8,6 @@
             <hr>
             <div class="stats" id="estimation">
                 <!--<i class="ti-timer"></i> -->
-                Currently logged in members.
             </div>
         </div>
     </div>
