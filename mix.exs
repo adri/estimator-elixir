@@ -45,8 +45,7 @@ defmodule Estimator.Mixfile do
      {:timex_ecto, "~> 3.0"},
      {:credo, "~> 0.3", only: [:dev, :test]},
      {:pryin, "~> 1.0"},
-     {:ua_parser2, "~> 0.0.2"},
-     {:yamerl, "~> 0.4.0"}
+     {:browser, "~> 0.1.0"}
      ]
   end
 
