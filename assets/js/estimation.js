@@ -33,7 +33,7 @@ class Estimation {
         this.socket = new Socket('/socket', { params: {
             user: this.user,
         } });
-        this.socket.connect()
+        this.socket.connect();
 
         this.estimation = this.socket.channel(this.estimationName);
         this.estimation.on('players_state', state => {
@@ -202,7 +202,7 @@ class Estimation {
                   <div class="media-body">
                     <h5 class="media-heading">${player.name}</h5>
                     ${this.isModerator(player.id) ? `<span class="text-danger"><small>Moderator</small></span>` : ''}
-                    <span class="text-success"><small>Last action ${player.joinedAt}</small></span>
+                    <span class="text-success"><small>Last action ${player.joinedAt} ${player.device || ''}</small></span>
                   </div>
                   <div class="media-right vote-container">
                     <span class="vote">${this.renderVote(player)}</span>
@@ -256,11 +256,13 @@ class Estimation {
     formatPlayers(players) {
         return Presence.list(players, (id, {metas}) => {
             const meta = metas.reduce((prev, current) => (prev.online_at > current.online_at) ? prev : current);
+
             return {
                 id: id,
                 avatar: meta.user.avatar,
                 name: meta.user.name,
                 joinedAt: (new Date(meta.online_at)).toLocaleTimeString(),
+                device: meta.user.device,
                 lastVote: meta.last_vote,
             };
         })

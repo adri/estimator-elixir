@@ -50,6 +50,8 @@
               id: "<%= @current_user.id %>",
               name: "<%= @current_user.name %>",
               avatar: "<%= @current_user.avatar %>",
+              agent: "<%= List.first(Plug.Conn.get_req_header(@conn, "user-agent")) %>",
+              device: "<%= UAParser2.parse(List.first(Plug.Conn.get_req_header(@conn, "user-agent"))).os.family %>",
           };
           window.board_id = "<%= @board_id %>";
         </script>
