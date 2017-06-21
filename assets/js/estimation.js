@@ -256,13 +256,13 @@ class Estimation {
     }
 
     renderEstimation() {
-        if (!this.isModerator(this.user.id)) {
-            this.estimationElem.innerHTML = `Currently logged in members.`;
+        if (!this.allPlayersVoted(this.players)) {
+            this.estimationElem.innerHTML = `Waiting for team members to vote.`;
             return;
         }
 
-        if (!this.allPlayersVoted(this.players)) {
-            this.estimationElem.innerHTML = `Waiting for players to vote.`;
+        if (!this.isModerator(this.user.id)) {
+            this.estimationElem.innerHTML = `Waiting for moderator.`;
             return;
         }
 
