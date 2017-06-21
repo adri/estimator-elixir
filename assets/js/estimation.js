@@ -133,6 +133,12 @@ class Estimation {
         this.nextIssue();
     }
 
+    skipIssue() {
+        console.log('skip estimation', this.currentIssueKey);
+        this.estimation.push('estimation:skip', {issue_key: this.currentIssueKey});
+        this.nextIssue();
+    }
+
     nextIssue() {
         let found = false;
         const next = Object.keys(this.issues).find(issue => {
@@ -280,7 +286,7 @@ class Estimation {
               ${cards.map(card => `<option value="${card}" ${card === mostLikelyVote ? 'selected' : ''}>${card}</option>`)}
             </select>
             <button class="btn btn-fill btn-success save-estimate" onclick="estimation.setSelectedEstimation(); return false">Save and next</button>
-            <button class="btn btn-success" onclick="estimation.nextIssue(); return false">Skip</button>
+            <button class="btn btn-success" onclick="estimation.skipIssue(); return false">Skip</button>
          `;
     }
 

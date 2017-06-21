@@ -47,30 +47,38 @@ defmodule Estimator.Web.EstimationChannel do
 
   def handle_in("issue:set", message, socket) do
     CurrentIssue.set_for_topic(message["issue_key"], socket.topic)
-    broadcast! socket, "issue:set", %{issue_key: message["issue_key"]}
+    broadcast! socket, "issue:set", message(%{issue_key: message["issue_key"]})
 
     {:noreply, socket}
   end
 
   def handle_in("moderator:set", user_id, socket) do
     Moderator.set_for_topic(user_id, socket.topic)
-    broadcast! socket, "moderator:set", %{
-      moderator_id: user_id,
-      timestamp: :os.system_time(:milli_seconds)
-    }
+    broadcast! socket, "moderator:set", message(%{ moderator_id: user_id })
 
     {:noreply, socket}
   end
 
   def handle_in("estimation:set", %{"issue_key" => issue_key, "estimation" => estimation}, socket) do
     Issue.set_estimation(issue_key, estimation)
-    broadcast! socket, "estimation:set", %{
+
+    broadcast! socket, "estimation:set", message(%{
       issue_key: issue_key,
       estimation: estimation,
-      timestamp: :os.system_time(:milli_seconds)
-    }
+    })
 
-    push socket, "estimation:stored", %{ issue_key: issue_key }
+    push socket, "estimation:stored", message(%{ issue_key: issue_key })
+
+    {:noreply, socket}
+  end
+
+  def handle_in("estimation:skip", %{"issue_key" => issue_key}, socket) do
+    Issue.skip_estimation(issue_key)
+
+    broadcast! socket, "estimation:set", message(%{
+      issue_key: issue_key,
+      estimation: "skipped",
+    })
 
     {:noreply, socket}
   end
@@ -92,13 +100,17 @@ defmodule Estimator.Web.EstimationChannel do
   end
 
   defp send_current_moderator(socket) do
-     broadcast! socket, "moderator:current", %{"moderator_id": Moderator.get_for_topic(socket.topic)}
+     broadcast! socket, "moderator:current", message(%{
+       "moderator_id": Moderator.get_for_topic(socket.topic)
+     })
 
      socket
   end
 
   defp send_current_issue(socket) do
-    push socket, "issue:current", %{"issue_key": CurrentIssue.get_for_topic(socket.topic)}
+    push socket, "issue:current", message(%{
+      "issue_key": CurrentIssue.get_for_topic(socket.topic)
+    })
 
     socket
   end
@@ -133,6 +145,12 @@ defmodule Estimator.Web.EstimationChannel do
       user: socket.assigns.user,
       last_vote: nil,
     }, override
+  end
+
+  defp message(data) do
+    Map.merge %{
+      timestamp: :os.system_time(:milli_seconds),
+    }, data
   end
 
 end

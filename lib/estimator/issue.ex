@@ -63,4 +63,11 @@ defmodule Estimator.Issue do
     |> SelectedIssue.changeset_update_estimation(%{key: issue_key, estimation: estimation})
     |> Repo.update
   end
+
+  def skip_estimation(issue_key) do
+    SelectedIssue
+    |> Repo.get_by(key: issue_key)
+    |> SelectedIssue.changeset_update_estimation(%{key: issue_key, estimation: "skipped"})
+    |> Repo.update
+  end
 end
