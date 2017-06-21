@@ -1,4 +1,14 @@
 <a href="<%= jira_link(@issue) %>"
+   class="jira-link"
    target="_blank">
+    <img
+        class="avatar avatar-sm"
+        width="16"
+        height="16"
+        title="<%= @issue["fields"]["reporter"]["displayName"] %>"
+        src="<%= @issue["fields"]["reporter"]["avatarUrls"]["48x48"] %>"
+    />
     <img src="<%= @issue["fields"]["issuetype"]["iconUrl"] %>" title="<%= @issue["fields"]["issuetype"]["name"] %>" />
-    <%= @issue["key"] %></a>
+    <%= @issue["key"] %>
+</a>
+

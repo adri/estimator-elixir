@@ -22,15 +22,20 @@
                 </thead>
                 <tbody>
                 <%= for issue <- @backlog["issues"] do %>
-                    <tr>
+                    <tr class="<%= if issue["fields"]["flagged"] do "flagged" end %>">
                       <td width="30">
                           <%= checkbox(form, String.to_atom(issue["key"]), class: "backlog-check") %>
                       </td>
-                      <td width="130">
+                      <td width="140">
                           <%= partial "issue_link.html", issue: issue %>
                       </td>
                       <td><%= issue["fields"]["summary"] %></td>
-                      <td><%= estimation_to_card(issue["fields"][estimation_field()]) %></td>
+                      <td>
+                          <%= estimation_to_card(issue["fields"][estimation_field()]) %>
+                          <%= if issue["fields"]["flagged"] do %>
+                            <img src="https://d1ixbz5qgnvms3.cloudfront.net/ticketswap.atlassian.net/s/-l3ljbd/b/c/1000.534.0/_/download/resources/com.pyxis.greenhopper.jira:gh-cards/images/cards/flagged.svg" />
+                          <% end %>
+                      </td>
                     </tr>
                 <% end %>
                 </tbody>

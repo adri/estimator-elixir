@@ -22,7 +22,7 @@
           <% end %>
           <%= for issue <- @issues do %>
               <tr>
-                <td width="130">
+                <td width="140">
                     <%= partial "issue_link.html", issue: issue %>
                 </td>
                 <td><%= issue.summary %></td>

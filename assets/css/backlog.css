@@ -1,3 +1,33 @@
 .backlog-table tr {
     cursor: pointer;
 }
+
+.flagged {
+    background-color: #FFF1CC;
+}
+
+.jira-link:hover .avatar-sm {
+    opacity: 1.0;
+    /* ungray */
+    filter: grayscale(0%);
+    -moz-filter: grayscale(0%);
+    -ms-filter: grayscale(0%);
+    -o-filter: grayscale(0%);
+    filter: none ; /* IE6-9 */
+    zoom:1; /* needed to trigger "hasLayout" in IE if no width or height is set */
+    -webkit-filter: grayscale(0%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+}
+
+.avatar.avatar-sm {
+    width: 16px;
+    height: 16px;
+    margin-right: 0;
+
+    /* grey out */
+    opacity: 0.4;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
