@@ -70,6 +70,8 @@ defmodule Estimator.Web.EstimationChannel do
         timestamp: :os.system_time(:milli_seconds)
       }
 
+      push socket, "estimation:stored", %{ issue_key: issue_key }
+
       {:noreply, socket}
     end
 

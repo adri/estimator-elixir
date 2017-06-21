@@ -27,6 +27,7 @@ class Estimation {
         this.setVote = this.setVote.bind(this);
         this.getVoteOnCurrentIssue = this.getVoteOnCurrentIssue.bind(this);
         this.setSelectedEstimation = this.setSelectedEstimation.bind(this);
+        this.onEstimationStored = this.onEstimationStored.bind(this);
     }
 
     initialize() {
@@ -84,10 +85,8 @@ class Estimation {
         this.estimation.on('estimation:set', state => {
             console.log('estimation set from moderator', state);
             $('.estimate-' + state.issue_key).html(state.estimation);
-            $('.save-estimate').addClass('blink_me');
-            setTimeout(() => $('.save-estimate').removeClass('blink_me'), 2000);
-
         });
+        this.estimation.on('estimation:stored', state => this.onEstimationStored(state.issue_key));
 
         this.renderCardDeck();
     }
@@ -116,10 +115,22 @@ class Estimation {
     setSelectedEstimation(e) {
         console.log('set estimation', this.currentIssueKey, this.getCurrentEstimation());
         this.estimation.push('estimation:set', {issue_key: this.currentIssueKey, estimation: this.getCurrentEstimation()});
+        $('.save-estimate').prop('disabled', true).addClass('loading');
+        setTimeout(() => $('.save-estimate').removeClass('loading').prop('disabled', false), 2000);
     }
 
     getCurrentEstimation() {
         return $('select[name=estimation]').val();
+    }
+
+    onEstimationStored(issueKey) {
+        console.log('stored estimation', issueKey);
+        if (this.currentIssueKey !== issueKey) {
+           return;
+        }
+
+        $('.save-estimate').removeClass('loading').prop('disabled', false);
+        this.nextIssue();
     }
 
     nextIssue() {
@@ -268,8 +279,8 @@ class Estimation {
            <select name="estimation" class="form-control selectpicker"> 
               ${cards.map(card => `<option value="${card}" ${card === mostLikelyVote ? 'selected' : ''}>${card}</option>`)}
             </select>
-            <button class="btn btn-fill btn-success save-estimate" onclick="estimation.setSelectedEstimation(); return false">Save</button>
-            <button class="btn btn-success" onclick="estimation.nextIssue(); return false">Next issue</button>
+            <button class="btn btn-fill btn-success save-estimate" onclick="estimation.setSelectedEstimation(); return false">Save and next</button>
+            <button class="btn btn-success" onclick="estimation.nextIssue(); return false">Skip</button>
          `;
     }
 

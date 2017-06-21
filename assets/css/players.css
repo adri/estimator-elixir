@@ -7,12 +7,30 @@
     font-weight: bold;
 }
 
-.blink_me {
+.loading {
     animation: blinker 1s linear infinite;
 }
 
-@keyframes blinker {
-    50% { opacity: 0; }
+.loading {
+    background-image:
+            repeating-linear-gradient(
+                    -45deg,
+                    #7ac29a,
+                    #7ac29a 11px,
+                    #42a084 10px,
+                    #42a084 20px /* determines size */
+            );
+    background-size: 28px 28px;
+    animation: move .5s linear infinite;
+}
+
+@keyframes move {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 28px 0;
+    }
 }
 
 .player .set_moderator {
