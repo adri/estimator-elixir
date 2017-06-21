@@ -2,7 +2,7 @@ defmodule Estimator.Web.EstimationChannel do
   use Estimator.Web, :channel
   @topic_prefix "estimation:"
 
- alias Estimator.{
+  alias Estimator.{
     Moderator,
     Votes,
     Issue,
@@ -34,10 +34,10 @@ defmodule Estimator.Web.EstimationChannel do
 
   def handle_in("vote:new", message, socket) do
     {:ok, vote} = Votes.insert_vote(%{
-       topic: socket.topic,
-       user_id: socket.assigns.user["id"],
-       issue_key: message["issue_key"],
-       vote: message["vote"],
+      topic: socket.topic,
+      user_id: socket.assigns.user["id"],
+      issue_key: message["issue_key"],
+      vote: message["vote"],
     })
 
     broadcast! socket, "vote:new", VoteView.render("vote.json", vote)
@@ -53,27 +53,27 @@ defmodule Estimator.Web.EstimationChannel do
   end
 
   def handle_in("moderator:set", user_id, socket) do
-      Moderator.set_for_topic(user_id, socket.topic)
-      broadcast! socket, "moderator:set", %{
-        moderator_id: user_id,
-        timestamp: :os.system_time(:milli_seconds)
-      }
+    Moderator.set_for_topic(user_id, socket.topic)
+    broadcast! socket, "moderator:set", %{
+      moderator_id: user_id,
+      timestamp: :os.system_time(:milli_seconds)
+    }
 
     {:noreply, socket}
   end
 
   def handle_in("estimation:set", %{"issue_key" => issue_key, "estimation" => estimation}, socket) do
-      Issue.set_estimation(issue_key, estimation)
-      broadcast! socket, "estimation:set", %{
-        issue_key: issue_key,
-        estimation: estimation,
-        timestamp: :os.system_time(:milli_seconds)
-      }
+    Issue.set_estimation(issue_key, estimation)
+    broadcast! socket, "estimation:set", %{
+      issue_key: issue_key,
+      estimation: estimation,
+      timestamp: :os.system_time(:milli_seconds)
+    }
 
-      push socket, "estimation:stored", %{ issue_key: issue_key }
+    push socket, "estimation:stored", %{ issue_key: issue_key }
 
-      {:noreply, socket}
-    end
+    {:noreply, socket}
+  end
 
   defp track_presence(socket) do
     push socket, "players_state", Presence.list(socket)
@@ -98,27 +98,28 @@ defmodule Estimator.Web.EstimationChannel do
   end
 
   defp send_current_issue(socket) do
-     push socket, "issue:current", %{"issue_key": CurrentIssue.get_for_topic(socket.topic)}
+    push socket, "issue:current", %{"issue_key": CurrentIssue.get_for_topic(socket.topic)}
 
-     socket
+    socket
   end
 
   defp send_current_votes(socket) do
-     issue = CurrentIssue.get_for_topic(socket.topic)
-     Issue.list_to_estimate(board_id(socket))
-      |> Enum.map(&(&1.key))
-      |> Enum.each(fn issue ->
+    issue = CurrentIssue.get_for_topic(socket.topic)
+    Issue.list_to_estimate(board_id(socket))
+     |> Enum.map(&(&1.key))
+     |> Enum.each(fn issue ->
        push socket, "vote:current", %{
-        "issue_key" => issue,
-        "votes" => Votes.for_topic_and_issue(socket.topic, issue)
+         "issue_key" => issue,
+         "votes" => Votes.for_topic_and_issue(socket.topic, issue)
        }
-      end)
+     end)
 
-     socket
+    socket
   end
 
   defp board_id(socket) do
     @topic_prefix <> board_id = socket.topic
+
     board_id
   end
 
@@ -133,4 +134,5 @@ defmodule Estimator.Web.EstimationChannel do
       last_vote: nil,
     }, override
   end
+
 end
