@@ -26,9 +26,8 @@
                       <td width="30">
                           <%= checkbox(form, String.to_atom(issue["key"]), class: "backlog-check") %>
                       </td>
-                      <td width="100">
-                          <a href="<%= jira_link(issue) %>"
-                             target="_blank"><%= issue["key"] %></a>
+                      <td width="130">
+                          <%= partial "issue_link.html", issue: issue %>
                       </td>
                       <td><%= issue["fields"]["summary"] %></td>
                       <td><%= estimation_to_card(issue["fields"][estimation_field()]) %></td>

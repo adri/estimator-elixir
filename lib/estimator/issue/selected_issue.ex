@@ -29,4 +29,11 @@ defmodule Estimator.Issue.SelectedIssue do
     |> cast(params, [:key, :estimation])
     |> validate_required([:key, :estimation])
   end
+
+  @doc """
+  Fetch raw data, like returned from the Jira API
+  """
+  def fetch(issue, key) do
+    {:ok, issue.raw[key]}
+  end
 end

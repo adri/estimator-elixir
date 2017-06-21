@@ -40,7 +40,7 @@
               <% end %>
               <%= for issue <- @selected_issues do %>
                   <tr>
-                    <td width="100"><a href="<%= issue.link %>" target="_blank"><%= issue.key %></a></td>
+                    <td width="130"><%= partial "issue_link.html", issue: issue %></td>
                     <td>
                         <%= issue.summary %>
                         <%= radio_button(form, :current_issue_key, issue.key, style: "display:none") %>

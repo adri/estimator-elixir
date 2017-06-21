@@ -1,0 +1,4 @@
+<a href="<%= jira_link(@issue) %>"
+   target="_blank">
+    <img src="<%= @issue["fields"]["issuetype"]["iconUrl"] %>" title="<%= @issue["fields"]["issuetype"]["name"] %>" />
+    <%= @issue["key"] %></a>

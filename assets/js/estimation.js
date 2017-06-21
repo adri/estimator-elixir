@@ -291,7 +291,9 @@ class Estimation {
     renderIssue(issue) {
         this.issueElem.innerHTML = `
             <div class="header">
-                <a href="${issue.link}" target="_blank">${issue.key}</a>
+                <a href="${issue.link}" target="_blank">
+                    <img src="${issue.type.iconUrl}" title="${issue.type.name}"/> ${issue.key}
+                </a>
                 <h3 class="title">${issue.summary}</h3>
             </div>
 
