@@ -257,7 +257,12 @@ class Estimation {
 
     renderEstimation() {
         if (!this.allPlayersVoted(this.players)) {
-            this.estimationElem.innerHTML = `Waiting for team members to vote.`;
+            const skipButton = this.isModerator(this.user.id) ? `<button class="btn btn-success" onclick="estimation.skipIssue(); return false">Skip</button>` : '';
+
+            this.estimationElem.innerHTML = `
+                Waiting for team members to vote.<br />
+                ${skipButton} 
+            `;
             return;
         }
 
@@ -306,6 +311,9 @@ class Estimation {
     }
 
     renderIssue(issue) {
+        if (!issue) {
+            return;
+        }
         this.issueElem.innerHTML = `
             <div class="header">
                 <a href="${issue.link}" target="_blank">
