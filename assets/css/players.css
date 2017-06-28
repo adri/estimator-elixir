@@ -42,3 +42,10 @@
 .player:hover .set_moderator {
     display: block;
 }
+
+.btn-deselect {
+    display: none;
+}
+.is-moderator .btn-deselect {
+    display: inline-block;
+}

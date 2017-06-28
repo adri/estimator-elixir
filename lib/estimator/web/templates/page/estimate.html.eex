@@ -50,7 +50,7 @@
                         <%= issue.estimation %>
                         <%= link "deselect",
                             to: page_path(@conn, :deselect_issue, @board_id, issue.key),
-                            class: "btn btn-sm btn-success" %>
+                            class: "btn btn-sm btn-success btn-deselect" %>
                     </td>
                   </tr>
               <% end %>

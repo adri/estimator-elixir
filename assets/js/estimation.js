@@ -177,9 +177,15 @@ class Estimation {
         this.renderPlayers(this.players);
         this.renderCardDeck();
         this.renderEstimation();
+        this.setBodyClass(userId);
         if (broadcast) {
             this.estimation.push('moderator:set', userId);
         }
+    }
+
+    setBodyClass() {
+        document.getElementsByTagName('body')[0]
+            .setAttribute('class', this.isModerator(this.user.id) ? 'is-moderator' : '');
     }
 
     allPlayersVoted(players) {
