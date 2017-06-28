@@ -13,6 +13,7 @@ class Estimation {
         this.currentIssueKey = null;
         this.votes = {};
         this.players = {};
+        this.awayUsers = {};
         this.playerListElem = playerListElem;
         this.cardDeckElem = cardDeckElem;
         this.estimationElem = estimationElem;
@@ -28,6 +29,8 @@ class Estimation {
         this.getVoteOnCurrentIssue = this.getVoteOnCurrentIssue.bind(this);
         this.setSelectedEstimation = this.setSelectedEstimation.bind(this);
         this.onEstimationStored = this.onEstimationStored.bind(this);
+        this.onUserAway = this.onUserAway.bind(this);
+        this.getAwayUsers = this.getAwayUsers.bind(this);
     }
 
     initialize() {
@@ -39,11 +42,11 @@ class Estimation {
         this.estimation = this.socket.channel(this.estimationName);
         this.estimation.on('players_state', state => {
             this.players = Presence.syncState(this.players, state);
-            this.renderPlayers(this.players);
+            this.renderPlayers(this.players, this.getAwayUsers());
         });
         this.estimation.on('presence_diff', state => {
             this.players = Presence.syncDiff(this.players, state);
-            this.renderPlayers(this.players);
+            this.renderPlayers(this.players, this.getAwayUsers());
         });
         this.estimation.join();
 
@@ -57,13 +60,13 @@ class Estimation {
 
         this.estimation.on('vote:new', state => {
             this.setVote(state.user_id, state.issue_key, state.vote);
-            this.renderPlayers(this.players);
+            this.renderPlayers(this.players, this.getAwayUsers());
             this.renderEstimation();
             this.renderCardDeck();
         });
         this.estimation.on('vote:current', state => {
             this.votes[state.issue_key] = state.votes;
-            this.renderPlayers(this.players);
+            this.renderPlayers(this.players, this.getAwayUsers());
             this.renderEstimation();
             this.renderCardDeck();
         });
@@ -88,6 +91,7 @@ class Estimation {
         });
         this.estimation.on('estimation:stored', state => this.onEstimationStored(state.issue_key));
 
+        this.estimation.on('user:away', user => this.onUserAway(user));
         this.renderCardDeck();
     }
 
@@ -103,7 +107,7 @@ class Estimation {
         console.log('set issue', issueKey);
         this.currentIssueKey = issueKey;
         this.renderIssue(this.issues[this.currentIssueKey]);
-        this.renderPlayers(this.players);
+        this.renderPlayers(this.players, this.getAwayUsers());
         this.renderEstimation();
         this.renderCardDeck();
         $(`:radio[value=${this.currentIssueKey}]`).click();
@@ -131,6 +135,21 @@ class Estimation {
 
         $('.save-estimate').removeClass('loading').prop('disabled', false);
         this.nextIssue();
+    }
+
+    onUserAway(state) {
+        console.log('User went away', state);
+        this.awayUsers[state.user.id] = {metas: [state]};
+    }
+
+    getAwayUsers() {
+        const players = Object.keys(this.players);
+        return Object.keys(this.awayUsers)
+            .filter(id => !players.includes(id))
+            .reduce((obj, key) => {
+                obj[key] = this.awayUsers[key];
+                return obj;
+            }, {});
     }
 
     skipIssue() {
@@ -174,7 +193,7 @@ class Estimation {
     setModerator(userId, broadcast = false) {
         console.log('set moderator', userId);
         this.currentModeratorId = userId;
-        this.renderPlayers(this.players);
+        this.renderPlayers(this.players, this.getAwayUsers());
         this.renderCardDeck();
         this.renderEstimation();
         this.setBodyClass(userId);
@@ -219,8 +238,8 @@ class Estimation {
         this.cardDeckElem.innerHTML = !this.isModerator(this.user.id) ? html : '';
     }
 
-    renderPlayers(players) {
-        this.playerListElem.innerHTML = this.formatPlayers(players).map(player => {
+    renderPlayers(players, away) {
+        const renderPlayer = player => {
             const setModerator = this.isModerator(this.user.id) ? `
                 <button 
                     class="btn btn-sm btn-success set_moderator" 
@@ -229,7 +248,7 @@ class Estimation {
                 </button>` : '';
             return `
                 <li>
-                    <div class="media player">
+                    <div class="media player ${player.status}">
                       <div class="media-left">
                         <img src="${player.avatar || '/images/faces/face-0.jpg'}" alt="${player.name}" width="50" class="media-object img-circle img-no-padding">
                       </div>
@@ -245,7 +264,10 @@ class Estimation {
                     </div>
                 </li>
              `;
-        }).join('');
+        };
+
+        this.playerListElem.innerHTML = this.formatPlayers(players).map(renderPlayer).join('');
+        this.playerListElem.innerHTML += this.formatPlayers(away).map(renderPlayer).join('');
     }
 
     renderVote(player) {
@@ -312,6 +334,7 @@ class Estimation {
                 joinedAt: (new Date(meta.online_at)).toLocaleTimeString(),
                 device: meta.user.device,
                 lastVote: meta.last_vote,
+                status: meta.status,
             };
         })
     }

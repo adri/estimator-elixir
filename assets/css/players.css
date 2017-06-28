@@ -33,14 +33,21 @@
     }
 }
 
+.player.away {
+    opacity: 0.5;
+}
+
 .player .set_moderator {
     display: none;
     overflow: hidden;
     transition: display .25s;
 }
 
-.player:hover .set_moderator {
+.is-moderator .player:hover .set_moderator {
     display: block;
+}
+.player:hover.away .set_moderator {
+    display: none;
 }
 
 .btn-deselect {

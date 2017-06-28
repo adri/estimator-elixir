@@ -21,6 +21,10 @@ defmodule Estimator.Web.EstimationChannel do
     {:error, "No estimation"}
   end
 
+  def terminate(reason, socket) do
+    broadcast! socket, "user:away", user_data(socket, %{status: "away"})
+  end
+
   def handle_info(:after_join, socket) do
     socket
       |> track_presence
@@ -144,6 +148,7 @@ defmodule Estimator.Web.EstimationChannel do
       online_at: :os.system_time(:milli_seconds),
       user: socket.assigns.user,
       last_vote: nil,
+      status: "online",
     }, override
   end
 
