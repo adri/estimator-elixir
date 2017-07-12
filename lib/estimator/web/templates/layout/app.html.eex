@@ -46,12 +46,42 @@
     <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
     <%= if @current_user do %>
         <script>
-          window.current_user = {
-              id: "<%= @current_user.id %>",
-              name: "<%= @current_user.name %>",
-              avatar: "<%= @current_user.avatar %>",
-              device: "<%= Browser.platform(@conn) %> <%= Browser.name(@conn) %> ",
+          const testUsers = {
+            'adrian': {
+                name: 'Adrian Philipp',
+                avatar: 'https://avatars1.githubusercontent.com/u/133832?v=3',
+            },
+            'kermit': {
+                name: 'Kermit the Frog',
+                avatar: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/00/004a15610ab5d48e91edfa63e227bf1533feb2d4_full.jpg',
+            },
+            'kitty': {
+                name: 'Kitty',
+                avatar: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/00/004a4566c414858db6fd5db7ee1a9144203e2060_full.jpg',
+            },
+            'bean': {
+                name: 'Mr. Bean',
+                avatar: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/00/004a29db404439f047138d5914e97bd13d3574cf_full.jpg',
+            },
           };
+
+          if (window.location.search) {
+              const id = window.location.search.replace('?', '');
+              window.current_user = {
+                  id: id,
+                  name: testUsers[id].name,
+                  avatar: testUsers[id].avatar,
+                  device: "<%= Browser.platform(@conn) %> <%= Browser.name(@conn) %> ",
+              };
+          } else {
+              window.current_user = {
+                  id: "<%= @current_user.id %>" + window.location.search,
+                  name: "<%= @current_user.name %>",
+                  avatar: "<%= @current_user.avatar %>",
+                  device: "<%= Browser.platform(@conn) %> <%= Browser.name(@conn) %> ",
+              };
+          }
+
           window.board_id = "<%= @board_id %>";
         </script>
     <% end %>

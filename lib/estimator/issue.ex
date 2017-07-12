@@ -8,6 +8,8 @@ defmodule Estimator.Issue do
   }
   alias Estimator.Api.Jira
 
+  @type issue_key :: String.t
+
   def list_selected(board_id) do
     SelectedIssue
     |> where(selected: true)

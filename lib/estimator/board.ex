@@ -5,9 +5,12 @@ defmodule Estimator.Board do
   alias Estimator.Vote.Vote
   alias Estimator.Issue.SelectedIssue
 
+  @type board_id :: integer
+
   @doc """
   Returns the last used board id or null.
   """
+  @spec last_used_board_id(integer) :: board_id | nil
   def last_used_board_id(user_id) do
       query = from v in Vote,
        join: i in SelectedIssue, on: i.key == v.issue_key,

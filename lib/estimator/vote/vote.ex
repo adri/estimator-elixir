@@ -11,6 +11,16 @@ defmodule Estimator.Vote.Vote do
     timestamps()
   end
 
+  @type t :: %Estimator.Vote.Vote{
+    id: vote_id | nil,
+    topic: String.t | nil,
+    issue_key: Estimator.Issue.issue_key | nil,
+    user_id: String.t | nil,
+    vote: String.t | nil,
+  }
+
+  @type vote_id :: integer
+
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
