@@ -6,6 +6,7 @@ defmodule Estimator.Mixfile do
      version: "0.0.1",
      elixir: "~> 1.4",
      elixirc_paths: elixirc_paths(Mix.env),
+     build_path: System.get_env("MIX_BUILD_PATH") || '_build',
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
