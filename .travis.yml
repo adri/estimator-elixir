@@ -1,1 +1,6 @@
 language: elixir
+
+cache:
+  directories:
+    - _build
+    - deps
