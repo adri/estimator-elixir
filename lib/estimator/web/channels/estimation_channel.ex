@@ -21,7 +21,7 @@ defmodule Estimator.Web.EstimationChannel do
     {:error, "No estimation"}
   end
 
-  def terminate(reason, socket) do
+  def terminate(_reason, socket) do
     broadcast! socket, "user:away", user_data(socket, %{status: "away"})
   end
 
@@ -120,7 +120,6 @@ defmodule Estimator.Web.EstimationChannel do
   end
 
   defp send_current_votes(socket) do
-    issue = CurrentIssue.get_for_topic(socket.topic)
     Issue.list_to_estimate(board_id(socket))
      |> Enum.map(&(&1.key))
      |> Enum.each(fn issue ->

@@ -9,10 +9,10 @@ defmodule Estimator.User.UserFromAuth do
   end
 
   defp basic_info(auth) do
-    %{id: auth.uid, name: name_from_auth(auth), avatar: auth.info.urls.avatar_url}
-  end
-
-  defp name_from_auth(auth) do
-    auth.info.name
+    %{
+      id: auth.uid,
+      name: auth.info.name,
+      avatar: auth.info.urls.avatar_url
+    }
   end
 end

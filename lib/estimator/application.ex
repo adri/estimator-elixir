@@ -8,12 +8,8 @@ defmodule Estimator.Application do
 
     # Define workers and child supervisors to be supervised
     children = [
-      # Start the Ecto repository
       supervisor(Estimator.Repo, []),
-      # Start the endpoint when the application starts
       supervisor(Estimator.Web.Endpoint, []),
-      # Start your own worker by calling: Estimator.Worker.start_link(arg1, arg2, arg3)
-      # worker(Estimator.Worker, [arg1, arg2, arg3]),
       supervisor(Estimator.Web.Presence, []),
       supervisor(Estimator.Moderator, []),
       supervisor(Estimator.Issue.CurrentIssue, []),

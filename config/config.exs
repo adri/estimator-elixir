@@ -34,7 +34,7 @@ config :guardian, Guardian,
   allowed_drift: 2000,
   verify_issuer: true, # optional
   secret_key: "2+nLPwNw0i/b/03tm21Utu/uZC1VN8lSG/VgMmMxy2gw5N1C6KCdstgTGQljZuKg",
-  serializer: Estimator.GuardianSerializer
+  serializer: Estimator.Auth.GuardianSerializer
 
 config :pryin,
   otp_app: :estimator,

@@ -45,9 +45,12 @@ defmodule Estimator.Mixfile do
      {:timex_ecto, "~> 3.0"},
      {:credo, "~> 0.3", only: [:dev, :test]},
      {:pryin, "~> 1.0"},
-     {:browser, "~> 0.1.0"}
+     {:browser, "~> 0.1.0"},
+     {:mix_test_watch, "~> 0.3", only: :dev, runtime: false}
      ]
   end
+
+#     {:xprof, "~> 1.2.1"}
 
   # Aliases are shortcuts or tasks specific to the current project.
   # For example, to create, migrate and run the seeds file at once:

@@ -2,6 +2,7 @@ defmodule Estimator.Web.PageController do
   use Estimator.Web, :controller
 
   alias Estimator.Api.Jira
+  alias Estimator.Board
   alias Estimator.Issue
   alias Estimator.Issue.SelectedIssue
 
@@ -12,7 +13,7 @@ defmodule Estimator.Web.PageController do
   end
 
   def index(conn, _params) do
-    redirect(conn, to: page_path(conn, :backlog, board_id()))
+    redirect(conn, to: page_path(conn, :backlog, board_id(conn)))
   end
 
   def backlog(conn, %{"board_id" => board_id}) do
@@ -67,8 +68,10 @@ defmodule Estimator.Web.PageController do
       ])
  end
 
-  defp board_id do
-    Application.get_env(:jira, :board_id, System.get_env("JIRA_BOARD_ID"))
+  defp board_id(conn) do
+    user = get_session(conn, :current_user);
+
+    Board.last_used_board_id(user.id) || Application.get_env(:jira, :board_id, System.get_env("JIRA_BOARD_ID"))
   end
 
   defp success(conn, message, redirect_path) do
