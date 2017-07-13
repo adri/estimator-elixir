@@ -43,6 +43,6 @@ defmodule Estimator.Api.Jira do
   defp fetch_backlog(board_id) do
     fields = "summary,description,priority,issuetype,status,reporter,flagged,#{estimation_field()}"
     expand = "renderedFields"
-    API.get!("/rest/agile/1.0/board/#{board_id}/backlog?fields=#{fields}&expand=#{expand}").body
+    API.get!("/rest/agile/1.0/board/#{board_id}/backlog?fields=#{fields}&expand=#{expand}", [], [ ssl: [{:versions, [:'tlsv1.2']}] ]).body
   end
 end
