@@ -30,7 +30,8 @@ defmodule Estimator.Api.Jira do
     API.put!(
       "/rest/api/2/issue/#{issue_key}",
       Poison.encode!(%{"fields" => %{"#{estimation_field()}" => Card.to_number(estimation)}}),
-      [{"Content-type", "application/json"}]
+      [{"Content-type", "application/json"}],
+      ssl: [{:versions, [:'tlsv1.2']}]
     )
   end
 
