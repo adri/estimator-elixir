@@ -51,10 +51,10 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :estimator, Estimator.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "estimator_dev",
-  hostname: "localhost",
+  username: System.get_env("DATABASE_USER") || "postgres",
+  password: System.get_env("DATABASE_PASSWORD") || "postgres",
+  database: System.get_env("DATABASE_DB") || "estimator_dev",
+  hostname: System.get_env("DATABASE_HOST") || "localhost",
   pool_size: 10
 
 import_config "dev.secret.exs"

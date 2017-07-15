@@ -15,7 +15,7 @@ config :estimator, Estimator.Repo,
 # Configures the endpoint
 config :estimator, Estimator.Web.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "2+nLPwNw0i/b/03tm21Utu/uZC1VN8lSG/VgMmMxy2gw5N1C6KCdstgTGQljZuKg",
+  secret_key_base: System.get_env("SECRET_KEY_BASE") || "2+nLPwNw0i/b/03tm21Utu/uZC1VN8lSG/VgMmMxy2gw5N1C6KCdstgTGQljZuKg",
   render_errors: [view: Estimator.Web.ErrorView, accepts: ~w(html json)],
   instrumenters: [PryIn.Instrumenter],
   pubsub: [name: Estimator.PubSub,
@@ -33,7 +33,7 @@ config :guardian, Guardian,
   ttl: { 30, :days },
   allowed_drift: 2000,
   verify_issuer: true, # optional
-  secret_key: "2+nLPwNw0i/b/03tm21Utu/uZC1VN8lSG/VgMmMxy2gw5N1C6KCdstgTGQljZuKg",
+  secret_key:  System.get_env("SECRET_KEY_BASE") || "2+nLPwNw0i/b/03tm21Utu/uZC1VN8lSG/VgMmMxy2gw5N1C6KCdstgTGQljZuKg",
   serializer: Estimator.Auth.GuardianSerializer
 
 config :pryin,
