@@ -15,8 +15,8 @@ jobs:
 
       # specify any bash command here prefixed with `run: `
       - restore_cache:
-        keys:
-          - build
+          keys:
+            - build
       - run: mix deps.get
       - run: mix ecto.create
       - run: mix test
