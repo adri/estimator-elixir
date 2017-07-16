@@ -48,7 +48,8 @@ defmodule Estimator.Mixfile do
      {:pryin, "~> 1.0"},
      {:browser, "~> 0.1.0"},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
-     {:dialyxir, "~> 0.5", only: [:test, :dev], runtime: false}
+     {:dialyxir, "~> 0.5", only: [:test, :dev], runtime: false},
+     {:junit_formatter, "~> 1.3", only: [:test]}
      ]
   end
 

@@ -9,6 +9,11 @@ config :estimator, Estimator.Web.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
+config :junit_formatter,
+  report_file: "test_result_report.xml",
+  report_dir: "/tmp",
+  print_report_file: true
+
 # Configure your database
 config :estimator, Estimator.Repo,
   adapter: Ecto.Adapters.Postgres,
