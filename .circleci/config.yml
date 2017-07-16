@@ -24,7 +24,7 @@ jobs:
       - run: MIX_ENV=test mix ecto.create
       - run: MIX_ENV=test mix test
       - store_test_results:
-          path: /tmp/test_result_report.xml
+          path: /tmp/
       - save_cache:
           key: build
           paths:
