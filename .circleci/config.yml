@@ -24,7 +24,7 @@ jobs:
       - run: MIX_ENV=test mix ecto.create
       - run: MIX_ENV=test mix test
       - run: MIX_ENV=test mix archive.install hex sobelow --force
-      - run: mix sobelow --exit Low --with-code --ignore Config.HTTPS
+      - run: MIX_ENV=test mix sobelow --exit Low --with-code --ignore Config.HTTPS
       - store_test_results:
           path: /tmp/
       - save_cache:
