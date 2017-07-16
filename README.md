@@ -1,5 +1,5 @@
 # Estimator
-[![Build Status](https://semaphoreci.com/api/v1/adri/estimator/branches/master/badge.svg)](https://semaphoreci.com/adri/estimator)
+[![CircleCI](https://circleci.com/gh/adri/estimator.svg?style=svg)](https://circleci.com/gh/adri/estimator)
 
 To start your Phoenix server:
 
