@@ -18,9 +18,9 @@ jobs:
       - restore_cache:
           keys:
             - build
-      - run: mix deps.get
-      - run: mix ecto.create
-      - run: mix test
+      - run: mix deps.get --only test
+      - run: MIX_ENV=test mix ecto.create
+      - run: MIX_ENV=test mix test
       - save_cache:
           key: build
           paths:
