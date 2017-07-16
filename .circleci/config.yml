@@ -18,7 +18,9 @@ jobs:
       - restore_cache:
           keys:
             - build
-      - run: mix deps.get --only test
+      - run: mix local.rebar --force
+      - run: mix local.hex --force
+      - run: MIX_ENV=test mix deps.get --only test
       - run: MIX_ENV=test mix ecto.create
       - run: MIX_ENV=test mix test
       - save_cache:
