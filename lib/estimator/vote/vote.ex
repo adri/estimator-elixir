@@ -1,4 +1,7 @@
 defmodule Estimator.Vote.Vote do
+  @moduledoc """
+  Represents a vote by a user for a specific issue
+  """
   use Estimator.Schema
   use Timex.Ecto.Timestamps
 

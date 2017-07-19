@@ -3,9 +3,11 @@ defmodule Estimator.Web.AuthController do
   plug Ueberauth
 
   alias Estimator.User.UserFromAuth
+  import Guardian.Plug, only: [sign_out: 1, sign_in: 2]
 
   def delete(conn, _params) do
-    Guardian.Plug.sign_out(conn)
+    conn
+    |> sign_out
     |> put_flash(:info, "You have been logged out!")
     |> configure_session(drop: true)
     |> redirect(to: "/login")
@@ -22,7 +24,7 @@ defmodule Estimator.Web.AuthController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Successfully authenticated.")
-        |> Guardian.Plug.sign_in(user)
+        |> sign_in(user)
         |> put_session(:current_user, user)
         |> redirect(to: "/")
       {:error, reason} ->

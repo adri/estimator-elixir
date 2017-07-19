@@ -69,7 +69,7 @@ defmodule Estimator.Web.PageController do
  end
 
   defp board_id(conn) do
-    user = get_session(conn, :current_user);
+    user = get_session(conn, :current_user)
 
     Board.last_used_board_id(user.id) || Application.get_env(:jira, :board_id, System.get_env("JIRA_BOARD_ID"))
   end

@@ -1,4 +1,7 @@
 defmodule Estimator.Issue.IssueFromJira do
+  @moduledoc """
+  Converts issues received from Jira to the local representation
+  """
   alias Estimator.Issue.SelectedIssue
 
   def create(board_id, jira_issue) do

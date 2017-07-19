@@ -1,4 +1,7 @@
 defmodule Estimator.Vote.Card do
+  @moduledoc """
+  Maps between t-shirt size cards and numbers
+  """
   @card_map %{
     "XS" => 1,
     "S" => 2,

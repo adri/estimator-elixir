@@ -1,4 +1,7 @@
 defmodule Estimator.Votes do
+  @moduledoc """
+  Receive votes for topics and issues, add new votes.
+  """
   import Ecto.Query
 
   alias Estimator.Repo
@@ -23,7 +26,7 @@ defmodule Estimator.Votes do
       |> Repo.all
       |> Enum.group_by(&(&1.user_id))
       |> Enum.map(fn {user_id, vote} ->
-        { user_id, List.first(vote).vote }
+        {user_id, List.first(vote).vote}
       end)
       |> Enum.into(%{})
   end

@@ -1,4 +1,7 @@
 defmodule Estimator.Issue do
+  @moduledoc """
+  Retrieve selected issues, issues to estimate etc.
+  """
   import Ecto.Query
 
   alias Estimator.Repo
@@ -48,7 +51,8 @@ defmodule Estimator.Issue do
   end
 
   def insert_jira_issue(board_id, params) do
-    IssueFromJira.create(board_id, params)
+    board_id
+    |> IssueFromJira.create(params)
     |> Repo.insert!
   end
 
@@ -62,14 +66,14 @@ defmodule Estimator.Issue do
     Jira.set_estimation(issue_key, estimation)
     SelectedIssue
     |> Repo.get_by(key: issue_key)
-    |> SelectedIssue.changeset_update_estimation(%{key: issue_key, estimation: estimation})
+    |> SelectedIssue.changeset_set_estimation(%{key: issue_key, estimation: estimation})
     |> Repo.update
   end
 
   def skip_estimation(issue_key) do
     SelectedIssue
     |> Repo.get_by(key: issue_key)
-    |> SelectedIssue.changeset_update_estimation(%{key: issue_key, estimation: "skipped"})
+    |> SelectedIssue.changeset_set_estimation(%{key: issue_key, estimation: "skipped"})
     |> Repo.update
   end
 end

@@ -1,4 +1,7 @@
 defmodule Estimator.Issue.SelectedIssue do
+  @moduledoc """
+  Provides schema and changesets for selected issues
+  """
   use Estimator.Schema
   use Timex.Ecto.Timestamps
 
@@ -24,7 +27,7 @@ defmodule Estimator.Issue.SelectedIssue do
     |> validate_required([:key, :board_id, :link, :selected, :summary, :description, :raw])
   end
 
-  def changeset_update_estimation(struct, params \\ %{}) do
+  def changeset_set_estimation(struct, params \\ %{}) do
     struct
     |> cast(params, [:key, :estimation])
     |> validate_required([:key, :estimation])

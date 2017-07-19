@@ -1,4 +1,8 @@
 defmodule Estimator.Auth.GuardianSerializer do
+  @moduledoc """
+  Serializes user tokens to user information
+  and vice versa
+  """
   @behaviour Guardian.Serializer
 
   def for_token(user) do

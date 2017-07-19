@@ -1,4 +1,9 @@
 defmodule Estimator.Web.EstimationChannel do
+  @moduledoc """
+  Phoenix Channel for estimations.
+
+  Channel names are combined @topic_prefix and board id.
+  """
   use Estimator.Web, :channel
   @topic_prefix "estimation:"
 
@@ -58,7 +63,7 @@ defmodule Estimator.Web.EstimationChannel do
 
   def handle_in("moderator:set", user_id, socket) do
     Moderator.set_for_topic(user_id, socket.topic)
-    broadcast! socket, "moderator:set", message(%{ moderator_id: user_id })
+    broadcast! socket, "moderator:set", message(%{moderator_id: user_id})
 
     {:noreply, socket}
   end
@@ -71,7 +76,7 @@ defmodule Estimator.Web.EstimationChannel do
       estimation: estimation,
     })
 
-    push socket, "estimation:stored", message(%{ issue_key: issue_key })
+    push socket, "estimation:stored", message(%{issue_key: issue_key})
 
     {:noreply, socket}
   end
@@ -95,7 +100,8 @@ defmodule Estimator.Web.EstimationChannel do
   end
 
   defp determine_moderator(socket) do
-    Presence.list(socket)
+    socket
+      |> Presence.list
       |> Map.keys
       |> Moderator.determine_moderator(socket.topic)
       |> Moderator.set_for_topic(socket.topic)
@@ -120,14 +126,16 @@ defmodule Estimator.Web.EstimationChannel do
   end
 
   defp send_current_votes(socket) do
-    Issue.list_to_estimate(board_id(socket))
-     |> Enum.map(&(&1.key))
-     |> Enum.each(fn issue ->
-       push socket, "vote:current", %{
-         "issue_key" => issue,
-         "votes" => Votes.for_topic_and_issue(socket.topic, issue)
-       }
-     end)
+    socket
+      |> board_id
+      |> Issue.list_to_estimate
+      |> Enum.map(&(&1.key))
+      |> Enum.each(fn issue ->
+        push socket, "vote:current", %{
+          "issue_key" => issue,
+          "votes" => Votes.for_topic_and_issue(socket.topic, issue)
+        }
+      end)
 
     socket
   end

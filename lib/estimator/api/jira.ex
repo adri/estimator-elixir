@@ -1,10 +1,17 @@
 defmodule Estimator.Api.Jira do
+  @moduledoc """
+  Jira API adapter
+  """
   alias Jira.API
 
   alias Estimator.Vote.Card
 
   def backlog(board_id) do
-    ConCache.get_or_store(:jira_backlog, board_id, fn() -> fetch_backlog(board_id) end)
+    ConCache.get_or_store(
+      :jira_backlog,
+      board_id,
+      fn() -> fetch_backlog(board_id) end
+    )
   end
 
   def invalidate_backlog(board_id) do
@@ -44,6 +51,6 @@ defmodule Estimator.Api.Jira do
   defp fetch_backlog(board_id) do
     fields = "summary,description,priority,issuetype,status,reporter,flagged,#{estimation_field()}"
     expand = "renderedFields"
-    API.get!("/rest/agile/1.0/board/#{board_id}/backlog?fields=#{fields}&expand=#{expand}", [], [ ssl: [{:versions, [:'tlsv1.2']}] ]).body
+    API.get!("/rest/agile/1.0/board/#{board_id}/backlog?fields=#{fields}&expand=#{expand}", [], [ssl: [{:versions, [:'tlsv1.2']}]]).body
   end
 end

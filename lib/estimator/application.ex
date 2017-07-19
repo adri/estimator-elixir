@@ -1,4 +1,7 @@
 defmodule Estimator.Application do
+  @moduledoc """
+  Application module
+  """
   use Application
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html

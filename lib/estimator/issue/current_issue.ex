@@ -1,4 +1,7 @@
 defmodule Estimator.Issue.CurrentIssue do
+  @moduledoc """
+  Stores the currently selected issue for a topic
+  """
   def start_link do
     Agent.start_link(fn -> MapSet.new end, name: __MODULE__)
   end

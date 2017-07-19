@@ -1,4 +1,7 @@
 defmodule Estimator.Board do
+  @moduledoc """
+  Information about boards
+  """
   import Ecto.Query
 
   alias Estimator.Repo
@@ -8,7 +11,7 @@ defmodule Estimator.Board do
   @type board_id :: integer
 
   @doc """
-  Returns the last used board id or null.
+  Returns the last used board id for a user or null.
   """
   @spec last_used_board_id(integer) :: board_id | nil
   def last_used_board_id(user_id) do
