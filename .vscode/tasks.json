@@ -1,0 +1,49 @@
+{
+  "version": "2.0.0",
+  "command": "mix",
+  "type": "process",
+  "suppressTaskName": true,
+  "tasks": [
+    {
+      "taskName": "build",
+      "args": [
+        "compile"
+      ],
+      "problemMatcher": [
+        "$mixCompileError",
+        "$mixCompileWarning"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+    },
+    {
+      "taskName": "watch tests",
+      "args": [
+        "test.watch",
+        " --stale"
+      ],
+      "problemMatcher": [
+        "$mixCompileError",
+        "$mixCompileWarning",
+        "$mixTestFailure"
+      ]
+    },
+    {
+      "taskName": "test",
+      "args": [
+        "test"
+      ],
+      "problemMatcher": [
+        "$mixCompileError",
+        "$mixCompileWarning",
+        "$mixTestFailure"
+      ],
+      "group": {
+          "kind": "test",
+          "isDefault": true
+      }
+    }
+  ]
+}
