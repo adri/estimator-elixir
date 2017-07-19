@@ -38,9 +38,16 @@ config :guardian, Guardian,
 
 config :pryin,
   otp_app: :estimator,
-  api_key: "j29oa4142c8q33sogifnm1qgsab3fvtif4r3spl90c2or5jr",
+  api_key: System.get_env("PRYIN_KEY") || "j29oa4142c8q33sogifnm1qgsab3fvtif4r3spl90c2or5jr",
   enabled: false,
   env: :dev
+
+config :sentry,
+  dsn: System.get_env("SENTRY_DSN") || "https://public:secret@app.getsentry.com/1",
+  environment_name: Mix.env,
+  included_environments: [:prod],
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!
 
 # Configures Elixir's Logger
 config :logger, :console,

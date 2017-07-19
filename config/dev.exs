@@ -58,3 +58,6 @@ config :estimator, Estimator.Repo,
   pool_size: 10
 
 import_config "dev.secret.exs"
+
+config :mix_test_watch,
+  clear: true

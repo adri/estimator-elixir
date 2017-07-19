@@ -49,10 +49,14 @@ defmodule Estimator.Mixfile do
      {:browser, "~> 0.1.0"},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
      {:dialyxir, "~> 0.5", only: [:test, :dev], runtime: false},
-     {:junit_formatter, "~> 1.3", only: [:test]}
+     {:junit_formatter, "~> 1.3", only: [:test]},
+     {:sentry, "~> 5.0.1"}
      ]
   end
 
+#     {:excheck, "~> 0.5", only: :test},
+#     {:triq, github: "triqng/triq", only: :test}
+#     {:wallaby, "~> 0.18.0"}
 #     {:xprof, "~> 1.2.1"}
 
   # Aliases are shortcuts or tasks specific to the current project.
