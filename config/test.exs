@@ -22,3 +22,7 @@ config :estimator, Estimator.Repo,
   database: System.get_env("DATABASE_DB") || "estimator_test",
   hostname: System.get_env("DATABASE_HOST") || "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :wallaby, screenshot_on_failure: true
+
+config :estimator, :sql_sandbox, true

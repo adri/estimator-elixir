@@ -58,5 +58,6 @@
   "ueberauth_github": {:hex, :ueberauth_github, "0.4.1", "b117f455da93771850ccf0bcf50593604a761006beb855cace43093592d265b4", [:mix], [{:oauth2, "~> 0.8", [hex: :oauth2, repo: "hexpm", optional: false]}, {:ueberauth, "~> 0.4", [hex: :ueberauth, repo: "hexpm", optional: false]}], "hexpm"},
   "unicode_util_compat": {:hex, :unicode_util_compat, "0.2.0", "dbbccf6781821b1c0701845eaf966c9b6d83d7c3bfc65ca2b78b88b8678bfa35", [:rebar3], [], "hexpm"},
   "uuid": {:hex, :uuid, "1.1.7", "007afd58273bc0bc7f849c3bdc763e2f8124e83b957e515368c498b641f7ab69", [:mix], [], "hexpm"},
+  "wallaby": {:hex, :wallaby, "0.18.0", "31131e85f67a6154d882ce41b17db4f17de31c8eee90cceb39a282bbcf1c7a95", [:mix], [{:httpoison, "~> 0.12.0", [hex: :httpoison, repo: "hexpm", optional: false]}, {:poison, ">= 1.4.0", [hex: :poison, repo: "hexpm", optional: false]}, {:poolboy, "~> 1.5", [hex: :poolboy, repo: "hexpm", optional: false]}], "hexpm"},
   "yamerl": {:hex, :yamerl, "0.4.0", "ae215b1242810a9bc07716b88062f1bfe06f6bc7cf68372091f630baa536df79", [:rebar3], []},
   "yaml_elixir": {:hex, :yaml_elixir, "1.0.0", "a0b703148aa8926a08fc14619c83e9cdf7555ff7e8bb9e74c08aa716eaf8c609", [:mix], []}}
