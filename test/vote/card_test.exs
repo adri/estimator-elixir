@@ -1,5 +1,5 @@
 defmodule Estimator.Vote.CardTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   alias Estimator.Vote.Card
 
   test "convert card to number" do
