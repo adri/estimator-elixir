@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <%= if Guardian.Plug.current_token(@conn) do %>
+      <meta name='guardian_token' content="<%= Guardian.Plug.current_token(@conn) %>">
+    <% end %>
 
     <title>Estimator</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">

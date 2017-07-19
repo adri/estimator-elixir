@@ -1,6 +1,6 @@
 defmodule Estimator.Web.UserSocket do
   use Phoenix.Socket
-#  use Guardian.Phoenix.Socket
+  import Guardian.Phoenix.Socket
 
   ## Channels
   channel "estimation:*", Estimator.Web.EstimationChannel
@@ -9,21 +9,11 @@ defmodule Estimator.Web.UserSocket do
   transport :websocket, Phoenix.Transports.WebSocket,
       timeout: 45_000
 
-  # transport :longpoll, Phoenix.Transports.LongPoll
-
-  # Socket params are passed from the client and can
-  # be used to verify and authenticate a user. After
-  # verification, you can put default assigns into
-  # the socket that will be set for all channels, ie
-  #
-  #     {:ok, assign(socket, :user_id, verified_user_id)}
-  #
-  # To deny connection, return `:error`.
-  #
-  # See `Phoenix.Token` documentation for examples in
-  # performing token verification on connect.
-  def connect(%{"user" => user}, socket) do
-    {:ok, assign(socket, :user, user)}
+  def connect(%{"user" => user, "guardian_token" => token}, socket) do
+    case sign_in(socket, token) do
+      {:ok, socket, _guardian} -> {:ok, assign(socket, :user, user)}
+      _ -> :error
+    end
   end
 
   def connect(_params, _socket) do

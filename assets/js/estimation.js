@@ -36,6 +36,7 @@ class Estimation {
     initialize() {
         this.socket = new Socket('/socket', { params: {
             user: this.user,
+            guardian_token: $('meta[name="guardian_token"]').attr('content'),
         } });
         this.socket.connect();
 
@@ -232,7 +233,7 @@ class Estimation {
         const html = cards.concat(funCards).map(card => `
            <div class="card estimator-card ${this.getVoteOnCurrentIssue(this.user.id) === card ? 'selected' : ''}">
                <h3>${card}</h3>
-            </div> 
+            </div>
         `).join('');
 
         this.cardDeckElem.innerHTML = !this.isModerator(this.user.id) ? html : '';
@@ -241,8 +242,8 @@ class Estimation {
     renderPlayers(players, away) {
         const renderPlayer = player => {
             const setModerator = this.isModerator(this.user.id) ? `
-                <button 
-                    class="btn btn-sm btn-success set_moderator" 
+                <button
+                    class="btn btn-sm btn-success set_moderator"
                     onclick="estimation.setModerator('${player.id}', true); return false">
                     <small>Set as moderator</small>
                 </button>` : '';
@@ -289,7 +290,7 @@ class Estimation {
 
             this.estimationElem.innerHTML = `
                 Waiting for team members to vote.<br />
-                ${skipButton} 
+                ${skipButton}
             `;
             return;
         }
@@ -315,7 +316,7 @@ class Estimation {
         // todo: get most likely estimation
         this.estimationElem.innerHTML = `
            Estimation
-           <select name="estimation" class="form-control selectpicker"> 
+           <select name="estimation" class="form-control selectpicker">
               ${cards.map(card => `<option value="${card}" ${card === mostLikelyVote ? 'selected' : ''}>${card}</option>`)}
             </select>
             <button class="btn btn-fill btn-success save-estimate" onclick="estimation.setSelectedEstimation(); return false">Save and next</button>
