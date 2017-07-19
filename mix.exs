@@ -34,7 +34,6 @@ defmodule Estimator.Mixfile do
      {:phoenix_ecto, "~> 3.2"},
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 2.6"},
-     {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:ueberauth, "~> 0.4"},
@@ -44,19 +43,21 @@ defmodule Estimator.Mixfile do
      {:guardian, "~> 0.14"},
      {:timex, "~> 3.0"},
      {:timex_ecto, "~> 3.0"},
-     {:credo, "~> 0.3", only: [:dev, :test]},
-     {:pryin, "~> 1.0"},
      {:browser, "~> 0.1.0"},
+     {:sentry, "~> 5.0.1", only: [:prod]},
+     {:pryin, "~> 1.0"},
+     # Dev
+     {:credo, "~> 0.3", only: [:dev, :test]},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
      {:dialyxir, "~> 0.5", only: [:test, :dev], runtime: false},
-     {:junit_formatter, "~> 1.3", only: [:test]},
-     {:sentry, "~> 5.0.1"}
+     {:phoenix_live_reload, "~> 1.0", only: :dev},
+     # Test only
+     {:junit_formatter, "~> 1.3", only: [:test]}
      ]
   end
 
 #     {:excheck, "~> 0.5", only: :test},
 #     {:triq, github: "triqng/triq", only: :test}
-#     {:wallaby, "~> 0.18.0"}
 #     {:xprof, "~> 1.2.1"}
 
   # Aliases are shortcuts or tasks specific to the current project.
