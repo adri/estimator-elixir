@@ -8,7 +8,7 @@ defmodule Estimator.Issue.CurrentIssueTest do
     {:ok, subject: subject}
   end
 
-  test "returns nil for a non existing topic", %{subject: subject}  do
+  test "returns nil for a non existing topic", %{subject: subject} do
     assert nil == CurrentIssue.get_for_topic('example', subject)
   end
 

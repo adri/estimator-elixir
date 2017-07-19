@@ -10,10 +10,10 @@ defmodule Estimator.Issue.CurrentIssue do
   end
 
   def get_for_topic(topic, name \\ @name) do
-    Agent.get(@name, &Map.get(&1, topic))
+    Agent.get(name, &Map.get(&1, topic))
   end
 
   def set_for_topic(issue_key, topic, name \\ @name) do
-    Agent.update(@name, &Map.put(&1, topic, issue_key))
+    Agent.update(name, &Map.put(&1, topic, issue_key))
   end
 end
