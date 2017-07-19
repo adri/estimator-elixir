@@ -9,6 +9,12 @@ defmodule Estimator.Moderator do
     Agent.start_link(fn -> MapSet.new end, opts)
   end
 
+  def get_or_elect(user_ids, topic, name \\ @name) do
+    user_ids
+    |> determine_moderator(topic, name)
+    |> set_for_topic(topic, name)
+  end
+
   def determine_moderator(user_ids, topic, name \\ @name) do
     current = get_for_topic(topic, name)
 
@@ -24,5 +30,7 @@ defmodule Estimator.Moderator do
 
   def set_for_topic(moderator_id, topic, name \\ @name) do
     Agent.update(name, &Map.put(&1, topic, moderator_id))
+
+    moderator_id
   end
 end

@@ -9,7 +9,7 @@ defmodule Estimator.ModeratorTest do
   end
 
   test ".set moderator for topic", %{subject: subject} do
-    Moderator.set_for_topic(1, 'topic', subject)
+    assert 1 == Moderator.set_for_topic(1, 'topic', subject)
   end
 
   test ".get moderator for topic", %{subject: subject} do

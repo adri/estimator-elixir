@@ -17,6 +17,8 @@ defmodule Estimator.Web.Router do
     plug Guardian.Plug.EnsureAuthenticated, handler: Estimator.Web.PageController
   end
 
+  forward "/graphiql", Absinthe.Plug.GraphiQL, schema: Estimator.GraphQL.Schema
+
   scope "/login", Estimator.Web do
     pipe_through [:browser]
 

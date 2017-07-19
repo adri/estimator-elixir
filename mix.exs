@@ -29,9 +29,13 @@ defmodule Estimator.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.3.0-rc", override: true},
+    [
+     {:absinthe, "~> 1.3.1"},
+     {:absinthe_plug, "~> 1.3.1"},
+     {:phoenix, "~> 1.3.0-rc", override: true},
      {:phoenix_pubsub, "~> 1.0"},
      {:phoenix_ecto, "~> 3.2"},
+     {:poison, "~> 3.1.0"},
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 2.6"},
      {:gettext, "~> 0.11"},
