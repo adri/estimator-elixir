@@ -49,7 +49,6 @@ defmodule Estimator.Mixfile do
      {:timex_ecto, "~> 3.0"},
      {:browser, "~> 0.3"},
      {:sentry, "~> 6.0", only: [:prod]},
-     {:pryin, "~> 1.0"},
      # Dev
      {:credo, "~> 0.3", only: [:dev, :test]},
      {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},

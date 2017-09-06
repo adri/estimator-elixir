@@ -10,14 +10,13 @@ config :estimator,
   ecto_repos: [Estimator.Repo]
 
 config :estimator, Estimator.Repo,
-  loggers: [PryIn.EctoLogger, Ecto.LogEntry]
+  loggers: [Ecto.LogEntry]
 
 # Configures the endpoint
 config :estimator, Estimator.Web.Endpoint,
   url: [host: "localhost"],
   secret_key_base: System.get_env("SECRET_KEY_BASE") || "2+nLPwNw0i/b/03tm21Utu/uZC1VN8lSG/VgMmMxy2gw5N1C6KCdstgTGQljZuKg",
   render_errors: [view: Estimator.Web.ErrorView, accepts: ~w(html json)],
-  instrumenters: [PryIn.Instrumenter],
   pubsub: [name: Estimator.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
@@ -35,12 +34,6 @@ config :guardian, Guardian,
   verify_issuer: true, # optional
   secret_key:  System.get_env("SECRET_KEY_BASE") || "2+nLPwNw0i/b/03tm21Utu/uZC1VN8lSG/VgMmMxy2gw5N1C6KCdstgTGQljZuKg",
   serializer: Estimator.Auth.GuardianSerializer
-
-config :pryin,
-  otp_app: :estimator,
-  api_key: System.get_env("PRYIN_KEY") || "j29oa4142c8q33sogifnm1qgsab3fvtif4r3spl90c2or5jr",
-  enabled: false,
-  env: :dev
 
 config :sentry,
   dsn: System.get_env("SENTRY_DSN") || "https://public:secret@app.getsentry.com/1",
