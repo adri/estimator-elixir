@@ -1,0 +1,21 @@
+.ql-container.ql-snow {
+    /*border: none;*/
+}
+.toolbar {
+    display: none;
+}
+
+.ql-toolbar {
+    display: block;
+}
+
+.ql-snow.ql-toolbar button {
+    width: 100px;
+    float: right;
+}
+
+.ql-snow.ql-toolbar {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    margin-top: -35px;
+}

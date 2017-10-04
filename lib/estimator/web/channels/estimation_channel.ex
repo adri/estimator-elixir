@@ -92,6 +92,22 @@ defmodule Estimator.Web.EstimationChannel do
     {:noreply, socket}
   end
 
+  def handle_in("issue:start_edit", %{"issue_key" => issue_key}, socket) do
+    broadcast! socket, "issue:start_edit", message(%{
+      issue_key: issue_key,
+    })
+
+    {:noreply, socket}
+  end
+
+  def handle_in("issue:stop_edit", %{"issue_key" => issue_key}, socket) do
+    broadcast! socket, "issue:stop_edit", message(%{
+      issue_key: issue_key,
+    })
+
+    {:noreply, socket}
+  end
+
   defp track_presence(socket) do
     push socket, "players_state", Presence.list(socket)
     Presence.track(socket, user_id(socket), user_data(socket))

@@ -4,6 +4,7 @@ defmodule Estimator.Web.UserSocket do
 
   ## Channels
   channel "estimation:*", Estimator.Web.EstimationChannel
+  channel "document:*", Estimator.Web.DocumentChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket,

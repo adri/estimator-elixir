@@ -1,6 +1,8 @@
 /* This file is for your main application css. */
 @import "../vendor/css/bootstrap.min.css";
 @import "../vendor/css/ct-paper.css";
+@import "../vendor/css/quill.snow.css";
+@import "editor.css";
 @import "demo.css";
 
 @import "navigation.css";

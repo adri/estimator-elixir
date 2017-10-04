@@ -1,4 +1,5 @@
 import {Socket, Presence} from 'phoenix';
+import Editor from './editor';
 
 const cards = ['XS', 'S', 'M', 'L', 'XL'];
 const funCards = ['?'];
@@ -22,6 +23,7 @@ class Estimation {
         this.renderCardDeck = this.renderCardDeck.bind(this);
         this.renderPlayers = this.renderPlayers.bind(this);
         this.renderIssue = this.renderIssue.bind(this);
+        this.renderIssueEditor = this.renderIssueEditor.bind(this);
         this.formatPlayers = this.formatPlayers.bind(this);
         this.setCurrentIssueKey = this.setCurrentIssueKey.bind(this);
         this.setModerator = this.setModerator.bind(this);
@@ -31,6 +33,8 @@ class Estimation {
         this.onEstimationStored = this.onEstimationStored.bind(this);
         this.onUserAway = this.onUserAway.bind(this);
         this.getAwayUsers = this.getAwayUsers.bind(this);
+        this.startEditIssue = this.startEditIssue.bind(this);
+        this.stopEditIssue = this.stopEditIssue.bind(this);
     }
 
     initialize() {
@@ -83,6 +87,12 @@ class Estimation {
         this.estimation.on('issue:set', state => {
             console.log('Issue set from moderator');
             this.setCurrentIssueKey(state.issue_key, false);
+        });
+        this.estimation.on('issue:start_edit', state => {
+            this.renderIssueEditor(this.currentIssueKey);
+        });
+        this.estimation.on('issue:stop_edit', state => {
+          this.editor = null;
         });
         this.estimation.on('moderator:set', state => this.setModerator(state.moderator_id));
         this.estimation.on('moderator:current', state => this.setModerator(state.moderator_id));
@@ -344,6 +354,7 @@ class Estimation {
         if (!issue) {
             return;
         }
+
         this.issueElem.innerHTML = `
             <div class="header">
                 <a href="${issue.link}" target="_blank">
@@ -352,10 +363,28 @@ class Estimation {
                 <h3 class="title">${issue.summary}</h3>
             </div>
 
-            <div class="content all-icons jira-content">
+            <div class="toolbar">
+              <button class="btn btn-sm btn-success">Save to Jira</button>
+            </div>
+            <div class="content all-icons jira-content" onclick="estimation.startEditIssue()">
                 ${issue.description}
             </div>
          `;
+    }
+
+    renderIssueEditor(issueKey) {
+      if (this.editor) return;
+
+      this.editor = new Editor(this.socket, issueKey, '.jira-content');
+      this.editor.initialize();
+    }
+
+    startEditIssue() {
+      this.estimation.push('issue:start_edit', {issue_key: this.selectFirstIssue()});
+    }
+
+    stopEditIssue() {
+      this.estimation.push('issue:stop_edit', {issue_key: this.selectFirstIssue()});
     }
 }
 
