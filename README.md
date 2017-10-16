@@ -1,5 +1,5 @@
 # Estimator
-[![CircleCI](https://circleci.com/gh/adri/estimator.svg?style=svg)](https://circleci.com/gh/adri/estimator)
+[![Waffle.io - Issues in progress](https://badge.waffle.io/adri/estimator.svg?columns=To%20Define%20Specs,To%20Do,In%20Review)](http://waffle.io/adri/estimator) [![CircleCI](https://circleci.com/gh/adri/estimator.svg?style=svg)](https://circleci.com/gh/adri/estimator) 
 
 To start your Phoenix server:
 
