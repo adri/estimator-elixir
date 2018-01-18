@@ -55,7 +55,7 @@ defmodule Estimator.Mixfile do
      {:dialyxir, "~> 0.5", only: [:test, :dev], runtime: false},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      # Test only
-     {:junit_formatter, "~> 1.3", only: [:test]}
+     {:junit_formatter, "~> 2.1", only: [:test]}
      ]
   end
 
