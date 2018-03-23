@@ -25,6 +25,7 @@ defmodule Estimator.Issue.SelectedIssue do
     struct
     |> cast(params, [:key, :board_id, :link, :selected, :summary, :description, :raw])
     |> validate_required([:key, :board_id, :link, :selected, :summary, :description, :raw])
+    |> unique_constraint(:key)
   end
 
   def changeset_set_estimation(struct, params \\ %{}) do

@@ -53,7 +53,8 @@ defmodule Estimator.Issue do
   def insert_jira_issue(board_id, params) do
     board_id
     |> IssueFromJira.create(params)
-    |> Repo.insert!
+    |> SelectedIssue.changeset()
+    |> Repo.insert!(on_conflict: :nothing)
   end
 
   def deselect(issue_key) do
