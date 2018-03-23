@@ -1,5 +1,6 @@
 defmodule Estimator.Web.Router do
   use Estimator.Web, :router
+  alias Estimator.Web.CspHeader
 
   require Ueberauth
 
@@ -9,6 +10,7 @@ defmodule Estimator.Web.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug CspHeader
   end
 
   pipeline :browser_auth do
