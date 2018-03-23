@@ -63,6 +63,12 @@ defmodule Estimator.Issue do
     |> Repo.delete_all
   end
 
+  def deselect_all(board_id) do
+    SelectedIssue
+    |> where(board_id: ^board_id)
+    |> Repo.delete_all
+  end
+
   def set_estimation(issue_key, estimation) do
     Jira.set_estimation(issue_key, estimation)
     SelectedIssue

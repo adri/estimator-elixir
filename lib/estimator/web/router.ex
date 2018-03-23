@@ -38,6 +38,7 @@ defmodule Estimator.Web.Router do
       get "/estimate", PageController, :estimate
       get "/estimated", PageController, :estimated
       get "/issues/:issue_key/deselect", PageController, :deselect_issue
+      get "/issues/deselect_all", PageController, :deselect_all_issues
       post "/issues/select", PageController, :select_issues
     end
   end

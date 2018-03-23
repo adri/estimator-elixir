@@ -54,6 +54,12 @@ defmodule Estimator.Web.PageController do
     success(conn, "Issue deselected", page_path(conn, :estimate, board_id))
   end
 
+  def deselect_all_issues(conn, %{"board_id" => board_id}) do
+    Issue.deselect_all(board_id)
+
+    success(conn, "All issues deselected", page_path(conn, :estimate, board_id))
+  end
+
   def unauthenticated(conn, _) do
     redirect(conn, to: "/login")
   end

@@ -16,6 +16,7 @@
 
 <div class="card">
   <div class="header">
+    <%= link "Deselect all", to: page_path(@conn, :deselect_all_issues, @board_id), class: "btn btn-success pull-right" %>
     <h4 class="title">All Issues to Estimate</h4>
     <p class="category">Overview over all issues to estimate. Estimated issues stay until tomorrow.</p>
   </div>
