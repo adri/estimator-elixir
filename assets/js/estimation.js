@@ -354,8 +354,22 @@ class Estimation {
 
             <div class="content all-icons jira-content">
                 ${issue.description}
+                ${this.renderAttachments(issue.attachments)} 
             </div>
          `;
+    }
+
+    renderAttachments(attachments) {
+        if (attachments.length === 0) {
+            return "";
+        }
+        return `
+          Attachments: <br />
+          ${attachments
+          .map(image => `<a href="${image}"><img width="200" style="margin-right: 10px" class="img-rounded" src="${image}" /></a>`)
+          .join('')
+        }
+        `;
     }
 }
 

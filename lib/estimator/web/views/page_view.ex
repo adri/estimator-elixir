@@ -19,6 +19,7 @@ defmodule Estimator.Web.PageView do
       summary: issue.summary,
       link: issue.link,
       description: issue.description,
+      attachments: Enum.map(issue["fields"]["attachment"] || [], &(&1["content"])),
       type: %{
         iconUrl: issue["fields"]["issuetype"]["iconUrl"],
         name: issue["fields"]["issuetype"]["name"],
