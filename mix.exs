@@ -42,7 +42,7 @@ defmodule Estimator.Mixfile do
       {:ueberauth, "~> 0.4"},
       {:ueberauth_github, "~> 0.4"},
       {:jira, "~> 0.0.8"},
-      {:con_cache, "~> 0.12.0"},
+      {:con_cache, "~> 0.14.0"},
       {:guardian, "~> 0.14"},
       {:timex, "~> 3.0"},
       {:timex_ecto, "~> 3.0"},
