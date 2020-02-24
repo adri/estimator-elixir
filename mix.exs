@@ -31,7 +31,7 @@ defmodule Estimator.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.3.0-rc", override: true},
+      {:phoenix, "~> 1.4.14", override: true},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.2"},
       {:poison, "~> 3.1.0"},
