@@ -49,7 +49,7 @@ defmodule Estimator.Mixfile do
       {:browser, "~> 0.3"},
       {:sentry, "~> 6.0", only: [:prod]},
       # Dev
-      {:credo, "~> 0.3", only: [:dev, :test]},
+      {:credo, "~> 1.4", only: [:dev, :test]},
       {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
       {:dialyxir, "~> 0.5", only: [:test, :dev], runtime: false},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
