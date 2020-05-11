@@ -41,7 +41,7 @@ defmodule Estimator.Mixfile do
       {:cowboy, "~> 1.0"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_github, "~> 0.4"},
-      {:jira, "~> 0.0.8"},
+      {:jira, "~> 0.1.1"},
       {:con_cache, "~> 0.12.0"},
       {:guardian, "~> 0.14"},
       {:timex, "~> 3.0"},
