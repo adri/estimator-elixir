@@ -51,7 +51,7 @@ defmodule Estimator.Mixfile do
       # Dev
       {:credo, "~> 0.3", only: [:dev, :test]},
       {:mix_test_watch, "~> 0.3", only: :dev, runtime: false},
-      {:dialyxir, "~> 0.5", only: [:test, :dev], runtime: false},
+      {:dialyxir, "~> 1.0", only: [:test, :dev], runtime: false},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       # Test only
       {:junit_formatter, "~> 1.3", only: [:test]}
